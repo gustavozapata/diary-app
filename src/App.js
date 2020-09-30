@@ -1,7 +1,7 @@
 import React from "react";
-import HomeScreen from "./src/screens/HomeScreen";
-import CalendarScreen from "./src/screens/CalendarScreen";
-import SettingsScreen from "./src/screens/SettingsScreen";
+import HomeScreen from "./screens/HomeScreen";
+import CalendarScreen from "./screens/CalendarScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 //Dependecy: reactnavigation.org
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
