@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
+  Animated,
   TouchableOpacity,
 } from "react-native";
 import EntryScreen from "./EntryScreen";
@@ -16,9 +17,11 @@ import AddEntryScreen from "./AddEntryScreen";
 import EntryCard from "../components/EntryCard";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import entriesData from "../data/entries.json";
 
+//TODO: - USE REDUCER AND CONTEXT HOOKS
 export default function HomeScreen({ navigation }) {
   const [entries, setEntries] = useState([...entriesData]);
 
@@ -63,8 +66,8 @@ export default function HomeScreen({ navigation }) {
 }
 
 function MainScreen({ navigation }) {
-  // const [entries, setEntries] = useState([...entriesData]);
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState([...entriesData]);
+  // const [entries, setEntries] = useState([]);
   const [search, setSearch] = useState("");
 
   return (
@@ -105,7 +108,10 @@ function MainScreen({ navigation }) {
               data={entries}
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => navigation.navigate(item.id)}>
-                  <EntryCard item={item} navigation={navigation} />
+                  {/* https://docs.swmansion.com/react-native-gesture-handler/docs/#installation */}
+                  <Swipeable renderRightActions={EntryAction}>
+                    <EntryCard item={item} navigation={navigation} />
+                  </Swipeable>
                 </TouchableOpacity>
               )}
               keyExtractor={(item) => item.id}
@@ -129,6 +135,28 @@ function MainScreen({ navigation }) {
         </ScrollView>
       </SafeAreaView>
     </>
+  );
+}
+
+function EntryAction(progress, dragX) {
+  const scale = dragX.interpolate({
+    inputRange: [-100, 0],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+
+  const deleteEntry = () => {
+    alert("Vamos");
+  };
+
+  return (
+    <TouchableOpacity onPress={() => deleteEntry()}>
+      <View style={styles.deleteView}>
+        <Animated.Text style={[styles.deleteText, { transform: [{ scale }] }]}>
+          Delete
+        </Animated.Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -194,13 +222,24 @@ const styles = StyleSheet.create({
     width: "100%",
     marginLeft: 6,
   },
+  deleteView: {
+    backgroundColor: "#FE3C32",
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "flex-end",
+  },
+  deleteText: {
+    padding: 20,
+    fontWeight: "600",
+    color: "#fff",
+  },
   startView: {
     marginTop: 60,
     alignItems: "center",
   },
   startImage: {
-    width: 250,
-    height: 170,
+    width: 280,
+    height: 180,
     marginBottom: 20,
     resizeMode: "cover",
   },

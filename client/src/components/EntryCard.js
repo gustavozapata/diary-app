@@ -15,8 +15,8 @@ export default function EntryCard({ item }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 24,
-    paddingHorizontal: 24,
+    padding: 24,
+    backgroundColor: "#fff",
   },
   titleContainer: {
     flexDirection: "row",
