@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,7 +9,6 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
-  Animated,
   TouchableOpacity,
 } from "react-native";
 import EntryScreen from "./EntryScreen";
@@ -18,56 +17,111 @@ import EntryCard from "../components/EntryCard";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
+import EntryAction from "../components/EntryAction";
+import axios from "axios";
+import { toDateString } from "../utils/utils";
+import { host } from "../config/config";
+import { EntryContext } from "../context/context";
 
+//FIXME: offline mode
 import entriesData from "../data/entries.json";
 
-//TODO: - USE REDUCER AND CONTEXT HOOKS
+//TODO: - USE REDUCER HOOK
 export default function HomeScreen({ navigation }) {
-  const [entries, setEntries] = useState([...entriesData]);
+  // const [entries, setEntries] = useState([...entriesData]);
+  const [entries, setEntries] = useState([]);
+
+  const [entrada, setEntrada] = useState({
+    title: "",
+    description: "",
+    date: toDateString(),
+  });
+  const valor = { entrada, setEntrada };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const Stack = createStackNavigator();
 
+  const fetchData = () => {
+    axios
+      .get(`${host}/api/entries`)
+      .then((res) => setEntries(res.data.data))
+      .catch((err) => console.log(err));
+  };
+
+  const deleteEntry = (id) => {
+    axios
+      .delete(`${host}/api/entries/${id}`)
+      .then(() => fetchData())
+      .catch((err) => console.log(err));
+  };
+
+  const createEntry = () => {
+    axios
+      .post(`${host}/api/entries`, { ...entrada })
+      .then(() => {
+        fetchData();
+        navigation.navigate("Diario");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="El Diario" component={MainScreen} />
-      <Stack.Screen
-        name="addEntry"
-        component={AddEntryScreen}
-        options={({ route }) => ({
-          title: route.params.title,
-          headerRight: () => <Text style={styles.action}>Save</Text>,
-        })}
-      />
-      {entries.map((entry) => (
+    <EntryContext.Provider value={valor}>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Diario">
+          {(props) => (
+            <MainScreen
+              {...props}
+              entries={entries}
+              deleteEntry={deleteEntry}
+            />
+          )}
+        </Stack.Screen>
         <Stack.Screen
-          name={entry.id}
-          options={{
-            title: "",
+          name="addEntry"
+          component={AddEntryScreen}
+          options={({ route }) => ({
+            title: route.params.title,
             headerRight: () => (
-              <Text
-                style={styles.action}
-                onPress={() =>
-                  navigation.navigate("addEntry", {
-                    entry,
-                    title: "Edit Entry",
-                  })
-                }
-              >
-                Edit
+              <Text style={styles.action} onPress={createEntry}>
+                Save
               </Text>
             ),
-          }}
-        >
-          {(props) => <EntryScreen {...props} entry={entry} />}
-        </Stack.Screen>
-      ))}
-    </Stack.Navigator>
+          })}
+        />
+        {entries.map((entry) => (
+          <Stack.Screen
+            name={entry._id}
+            key={entry._id}
+            options={{
+              title: "",
+              headerRight: () => (
+                <Text
+                  style={styles.action}
+                  onPress={() =>
+                    navigation.navigate("addEntry", {
+                      entry,
+                      title: "Edit Entry",
+                    })
+                  }
+                >
+                  Edit
+                </Text>
+              ),
+            }}
+          >
+            {(props) => <EntryScreen {...props} entry={entry} />}
+          </Stack.Screen>
+        ))}
+      </Stack.Navigator>
+    </EntryContext.Provider>
   );
 }
 
-function MainScreen({ navigation }) {
-  const [entries, setEntries] = useState([...entriesData]);
-  // const [entries, setEntries] = useState([]);
+function MainScreen({ navigation, entries, deleteEntry }) {
   const [search, setSearch] = useState("");
 
   return (
@@ -107,9 +161,18 @@ function MainScreen({ navigation }) {
             <FlatList
               data={entries}
               renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => navigation.navigate(item.id)}>
+                <TouchableOpacity onPress={() => navigation.navigate(item._id)}>
                   {/* https://docs.swmansion.com/react-native-gesture-handler/docs/#installation */}
-                  <Swipeable renderRightActions={EntryAction}>
+                  <Swipeable
+                    renderRightActions={(progress, dragX) => (
+                      <EntryAction
+                        progress={progress}
+                        dragX={dragX}
+                        deleteEntry={() => deleteEntry(item._id)}
+                      />
+                    )}
+                    key={item._id}
+                  >
                     <EntryCard item={item} navigation={navigation} />
                   </Swipeable>
                 </TouchableOpacity>
@@ -135,28 +198,6 @@ function MainScreen({ navigation }) {
         </ScrollView>
       </SafeAreaView>
     </>
-  );
-}
-
-function EntryAction(progress, dragX) {
-  const scale = dragX.interpolate({
-    inputRange: [-100, 0],
-    outputRange: [1, 0],
-    extrapolate: "clamp",
-  });
-
-  const deleteEntry = () => {
-    alert("Vamos");
-  };
-
-  return (
-    <TouchableOpacity onPress={() => deleteEntry()}>
-      <View style={styles.deleteView}>
-        <Animated.Text style={[styles.deleteText, { transform: [{ scale }] }]}>
-          Delete
-        </Animated.Text>
-      </View>
-    </TouchableOpacity>
   );
 }
 
@@ -221,17 +262,6 @@ const styles = StyleSheet.create({
   inputSearch: {
     width: "100%",
     marginLeft: 6,
-  },
-  deleteView: {
-    backgroundColor: "#FE3C32",
-    justifyContent: "center",
-    flex: 1,
-    alignItems: "flex-end",
-  },
-  deleteText: {
-    padding: 20,
-    fontWeight: "600",
-    color: "#fff",
   },
   startView: {
     marginTop: 60,
