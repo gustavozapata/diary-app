@@ -58,14 +58,25 @@ export default function HomeScreen({ navigation }) {
       .catch((err) => console.log(err));
   };
 
-  const createEntry = () => {
-    axios
-      .post(`${host}/api/entries`, { ...entrada })
-      .then(() => {
-        fetchData();
-        navigation.navigate("Diario");
-      })
-      .catch((err) => console.log(err));
+  const saveEntry = (action) => {
+    if (action.title === "Add Entry") {
+      axios
+        .post(`${host}/api/entries`, { ...entrada })
+        .then(() => {
+          fetchData();
+          navigation.navigate("Diario");
+        })
+        .catch((err) => console.log(err));
+    } else {
+      //edit entry
+      axios
+        .patch(`${host}/api/entries/${action.entry._id}`, { ...entrada })
+        .then(() => {
+          fetchData();
+          navigation.navigate(action.entry._id);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -86,7 +97,10 @@ export default function HomeScreen({ navigation }) {
           options={({ route }) => ({
             title: route.params.title,
             headerRight: () => (
-              <Text style={styles.action} onPress={createEntry}>
+              <Text
+                style={styles.action}
+                onPress={() => saveEntry(route.params)}
+              >
                 Save
               </Text>
             ),
