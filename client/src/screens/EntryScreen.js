@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, Text, StyleSheet, View } from "react-native";
+import { ScrollView, Text, StyleSheet, View, Image } from "react-native";
+import Comments from "../components/Comments";
 import RatingStars from "../components/RatingStars";
 import entryStyles from "../styles/entryStyles";
 import { toDateString } from "../utils/utils";
@@ -23,9 +24,7 @@ export default function EntryScreen({ entry }) {
           marginVertical: 12,
         }}
       />
-      <View sytle={styles.commentsContainer}>
-        <Text style={styles.commentsTitle}>Comments</Text>
-      </View>
+      <Comments />
     </ScrollView>
   );
 }
@@ -48,13 +47,5 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#fff",
     // color: "#F20D44",
-  },
-  commentsContainer: {
-    // marginTop: 80,
-  },
-  commentsTitle: {
-    marginTop: 20,
-    fontSize: 25,
-    fontWeight: "700",
   },
 });

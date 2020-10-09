@@ -2,12 +2,12 @@ import React from "react";
 import { View, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-export default function CalendarScreen() {
+export default function LibraryScreen() {
   const Stack = createStackNavigator();
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Calendar" component={MainScreen} />
+      <Stack.Screen name="Library" component={MainScreen} />
     </Stack.Navigator>
   );
 }
@@ -15,7 +15,7 @@ export default function CalendarScreen() {
 function MainScreen() {
   return (
     <View>
-      <Text>CalendarScreen</Text>
+      <Text>Library</Text>
     </View>
   );
 }

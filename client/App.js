@@ -1,6 +1,6 @@
 import React from "react";
 import HomeScreen from "./src/screens/HomeScreen";
-import CalendarScreen from "./src/screens/CalendarScreen";
+import LibraryScreen from "./src/screens/LibraryScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 //Dependecy: reactnavigation.org
 import { NavigationContainer } from "@react-navigation/native";
@@ -20,8 +20,8 @@ export default function App() {
             let icon;
             if (route.name === "Home") {
               icon = "ios-bookmarks";
-            } else if (route.name === "Calendar") {
-              icon = "ios-calendar";
+            } else if (route.name === "Library") {
+              icon = "ios-book";
             } else if (route.name === "Settings") {
               icon = "ios-settings";
             }
@@ -40,9 +40,9 @@ export default function App() {
           options={{ title: "Home" }}
         />
         <Tab.Screen
-          name="Calendar"
-          component={CalendarScreen}
-          options={{ title: "Calendar", tabBarBadge: 2 }}
+          name="Library"
+          component={LibraryScreen}
+          options={{ title: "Library", tabBarBadge: 2 }}
         />
         <Tab.Screen
           name="Settings"
