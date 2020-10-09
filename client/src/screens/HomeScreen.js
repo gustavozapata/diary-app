@@ -7,7 +7,6 @@ import {
   Image,
   FlatList,
   SafeAreaView,
-  TextInput,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
@@ -15,13 +14,14 @@ import EntryScreen from "./EntryScreen";
 import AddEntryScreen from "./AddEntryScreen";
 import EntryCard from "../components/EntryCard";
 import { createStackNavigator } from "@react-navigation/stack";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import EntryAction from "../components/EntryAction";
+import SearchBar from "../components/SearchBar";
 import axios from "axios";
 import { toDateString } from "../utils/utils";
 import { host } from "../config/config";
 import { EntryContext } from "../context/context";
+import screenStyles from "../styles/screenStyles";
 
 //FIXME: offline mode
 import entriesData from "../data/entries.json";
@@ -136,25 +136,15 @@ export default function HomeScreen({ navigation }) {
 }
 
 function MainScreen({ navigation, entries, deleteEntry }) {
-  const [search, setSearch] = useState("");
-
   return (
     <>
       <StatusBar style="auto" />
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView style={screenStyles.safeArea}>
         <ScrollView
-          contentContainerStyle={styles.scrollView}
+          contentContainerStyle={screenStyles.scrollView}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.searchBar}>
-            <Ionicons name="ios-search" size={25} style={{ marginTop: 4 }} />
-            <TextInput
-              onChangeText={(text) => setSearch(text)}
-              placeholder="Search by title"
-              value={search}
-              style={styles.inputSearch}
-            />
-          </View>
+          <SearchBar placeholder="Search by title" />
           <View style={styles.banner}>
             {entries.length > 0 && (
               <View style={{ flexDirection: "row", marginRight: 45 }}>
@@ -168,7 +158,7 @@ function MainScreen({ navigation, entries, deleteEntry }) {
                 navigation.navigate("addEntry", { title: "Add Entry" })
               }
             >
-              +Add entry
+              +Add Book
             </Text>
           </View>
           {entries.length > 0 ? (
@@ -216,15 +206,6 @@ function MainScreen({ navigation, entries, deleteEntry }) {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  scrollView: {
-    alignItems: "center",
-    justifyContent: "center",
-    // paddingHorizontal: 24,
-  },
   action: {
     fontSize: 15,
     color: "#1270DD",
@@ -262,20 +243,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
     fontWeight: "700",
     color: "#1270DD",
-  },
-  searchBar: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 20,
-    paddingLeft: 10,
-    marginVertical: 12,
-    width: "90%",
-    height: 35,
-  },
-  inputSearch: {
-    width: "100%",
-    marginLeft: 6,
   },
   startView: {
     marginTop: 60,

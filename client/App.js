@@ -42,7 +42,7 @@ export default function App() {
         <Tab.Screen
           name="Library"
           component={LibraryScreen}
-          options={{ title: "Library", tabBarBadge: 2 }}
+          options={{ title: "Library" }}
         />
         <Tab.Screen
           name="Settings"
