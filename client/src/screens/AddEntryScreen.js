@@ -35,7 +35,7 @@ export default function AddEntryScreen({ route }) {
       <TextInput
         style={entryStyles.title}
         multiline={true}
-        placeholder="Title"
+        placeholder="Book Title"
         value={entrada.title}
         autoFocus={true}
         onChangeText={(value) => handleChangeText("title", value)}
@@ -44,7 +44,7 @@ export default function AddEntryScreen({ route }) {
       <TextInput
         multiline={true}
         style={entryStyles.description}
-        placeholder="Description"
+        placeholder="Brief description of the book"
         value={entrada.description}
         onChangeText={(value) => handleChangeText("description", value)}
       />

@@ -13,9 +13,11 @@ const entryStyles = {
     color: "#777",
   },
   description: {
-    marginVertical: 30,
-    fontSize: 16,
-    lineHeight: 23,
+    marginTop: 30,
+    marginBottom: 10,
+    fontSize: 20,
+    color: "#545454",
+    lineHeight: 30,
     minHeight: 80,
   },
 };
