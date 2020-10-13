@@ -9,7 +9,7 @@ export default function EntryScreen({ entry }) {
   return (
     <ScrollView style={entryStyles.container}>
       <Text style={entryStyles.title}>{entry.title}</Text>
-      <RatingStars stars={entry.rating} />
+      <RatingStars entry={entry} />
       <View style={styles.pagesContainer}>
         <Text style={entryStyles.date}>{toDateString(entry.date)}</Text>
         <View style={styles.pages}>

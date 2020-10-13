@@ -9,3 +9,6 @@ export const UPDATE_DESC = "UPDATE_DESC";
 
 export const ADD_COMMENT = "ADD_COMMENT";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
+
+export const ADD_RATING = "ADD_RATING";
+export const ADD_PAGE = "ADD_PAGE";

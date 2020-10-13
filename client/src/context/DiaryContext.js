@@ -11,6 +11,8 @@ import {
   UPDATE_DESC,
   LOAD_ENTRY,
   UPDATE_COMMENT,
+  ADD_RATING,
+  ADD_PAGE,
 } from "../helpers/types";
 import axios from "axios";
 import { host } from "../config/config";
@@ -82,6 +84,22 @@ const diaryReducer = (state, action) => {
       };
     case UPDATE_COMMENT:
       return { ...state, comment: action.payload };
+    case ADD_RATING:
+      return {
+        ...state,
+        entries: state.entries.map((entry) => {
+          if (entry._id !== action.payload.id) {
+            return entry;
+          } else {
+            return {
+              ...entry,
+              rating: action.payload.rating,
+            };
+          }
+        }),
+      };
+    case ADD_PAGE:
+      return {};
     default:
       return state;
   }
@@ -153,6 +171,20 @@ export const DiaryProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  const addRating = (id, rating, callback) => {
+    axios
+      .patch(`${host}/api/entries/${id}`, rating)
+      .then(() => {
+        dispatch({
+          type: ADD_RATING,
+          payload: { id, rating },
+        });
+      })
+      .catch((err) => console.log(err));
+
+    if (callback) callback();
+  };
+
   // COMMENTS
   const loadEntry = (value) => {
     dispatch({
@@ -199,6 +231,7 @@ export const DiaryProvider = ({ children }) => {
         updateText: updateText,
         updateComment: updateComment,
         postComment: postComment,
+        addRating: addRating,
       }}
     >
       {children}
