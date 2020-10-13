@@ -1,35 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, Text, TextInput, View, Image } from "react-native";
 import SingleComment from "./SingleComment";
+import DiaryContext from "../context/DiaryContext";
 
-const Comments = () => {
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      user: "parent",
-      comment: "I think this is brilliant. Let's keep doing it.",
-    },
-    {
-      id: 2,
-      user: "teacher",
-      comment: "I'm glad she's learning lots",
-    },
-    {
-      id: 1,
-      user: "child",
-      comment: "I just read this but I’m a bit confused ngl",
-    },
-  ]);
-
-  const postComment = () => {
-    alert("posting");
-  };
+const Comments = ({ entry }) => {
+  const { state, postComment, updateComment } = useContext(DiaryContext);
+  const { comment } = state;
+  const { comments } = entry;
 
   return (
     <View sytle={styles.commentsContainer}>
       <Text style={styles.commentsTitle}>Comments</Text>
-      {/* TODO: LOAD COMMENTS */}
       <View style={styles.addComment}>
         <View>
           <Image
@@ -43,10 +24,15 @@ const Comments = () => {
           style={styles.addText}
           placeholder="Add a comment"
           value={comment}
-          onChangeText={(value) => setComment(value)}
+          onChangeText={(value) => updateComment(value)}
         />
         {comment.length > 0 && (
-          <Text style={styles.addBtn} onPress={postComment}>
+          <Text
+            style={styles.addBtn}
+            onPress={() => {
+              postComment(entry._id, { user: "child", comment: comment });
+            }}
+          >
             Post
           </Text>
         )}

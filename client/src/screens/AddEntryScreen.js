@@ -1,34 +1,25 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Text, ScrollView, TextInput } from "react-native";
 import entryStyles from "../styles/entryStyles";
+import DiaryContext from "../context/DiaryContext";
+import { UPDATE_TITLE, UPDATE_DESC } from "../helpers/types";
 import { toDateString } from "../utils/utils";
-import { EntryContext } from "../context/context";
 
 export default function AddEntryScreen({ route }) {
-  const { entrada, setEntrada } = useContext(EntryContext);
+  const { loadEntry, updateText, state } = useContext(DiaryContext);
 
   useEffect(() => {
     if (route.params && route.params.entry) {
       const { entry } = route.params;
-      setEntrada({
+      loadEntry({
         title: entry.title,
         description: entry.description,
         date: toDateString(entry.date),
       });
     } else {
-      setEntrada({
-        title: "",
-        description: "",
-        date: toDateString(),
-      });
+      loadEntry({ title: "", description: "", date: toDateString() });
     }
   }, []);
-
-  const handleChangeText = (field, value) => {
-    setEntrada((prevState) => {
-      return { ...prevState, [field]: value };
-    });
-  };
 
   return (
     <ScrollView style={entryStyles.container}>
@@ -36,17 +27,17 @@ export default function AddEntryScreen({ route }) {
         style={entryStyles.title}
         multiline={true}
         placeholder="Book Title"
-        value={entrada.title}
+        value={state.bookTitle}
         autoFocus={true}
-        onChangeText={(value) => handleChangeText("title", value)}
+        onChangeText={(value) => updateText(UPDATE_TITLE, value)}
       />
-      <Text style={entryStyles.date}>{entrada.date}</Text>
+      <Text style={entryStyles.date}>{state.bookDate}</Text>
       <TextInput
         multiline={true}
         style={entryStyles.description}
         placeholder="Brief description of the book"
-        value={entrada.description}
-        onChangeText={(value) => handleChangeText("description", value)}
+        value={state.bookDescription}
+        onChangeText={(value) => updateText(UPDATE_DESC, value)}
       />
     </ScrollView>
   );

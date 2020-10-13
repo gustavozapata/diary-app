@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     shadowRadius: 7,
     padding: 12,
     fontSize: 17,
-    fontWeight: "500",
+    fontWeight: "400",
   },
   iconComment: {
     width: 35,

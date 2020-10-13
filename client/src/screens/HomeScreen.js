@@ -1,5 +1,5 @@
+import React, { useContext } from "react";
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -10,132 +10,20 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import EntryScreen from "./EntryScreen";
-import AddEntryScreen from "./AddEntryScreen";
 import EntryCard from "../components/EntryCard";
-import { createStackNavigator } from "@react-navigation/stack";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import EntryAction from "../components/EntryAction";
 import SearchBar from "../components/SearchBar";
-import axios from "axios";
-import { toDateString } from "../utils/utils";
-import { host } from "../config/config";
-import { EntryContext } from "../context/context";
+import DiaryContext from "../context/DiaryContext";
 import screenStyles from "../styles/screenStyles";
 
 //FIXME: offline mode
-import entriesData from "../data/entries.json";
+// import entriesData from "../data/entries.json";
 
-//TODO: - USE REDUCER HOOK
-export default function HomeScreen({ navigation }) {
-  // const [entries, setEntries] = useState([...entriesData]);
-  const [entries, setEntries] = useState([]);
+const HomeScreen = ({ navigation }) => {
+  const { state, deleteEntry } = useContext(DiaryContext);
+  const { entries } = state;
 
-  const [entrada, setEntrada] = useState({
-    title: "",
-    description: "",
-    date: toDateString(),
-  });
-  const valor = { entrada, setEntrada };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const Stack = createStackNavigator();
-
-  const fetchData = () => {
-    axios
-      .get(`${host}/api/entries`)
-      .then((res) => setEntries(res.data.data))
-      .catch((err) => console.log(err));
-  };
-
-  const deleteEntry = (id) => {
-    axios
-      .delete(`${host}/api/entries/${id}`)
-      .then(() => fetchData())
-      .catch((err) => console.log(err));
-  };
-
-  const saveEntry = (action) => {
-    if (action.title === "Add Entry") {
-      axios
-        .post(`${host}/api/entries`, { ...entrada })
-        .then(() => {
-          fetchData();
-          navigation.navigate("Diario");
-        })
-        .catch((err) => console.log(err));
-    } else {
-      //edit entry
-      axios
-        .patch(`${host}/api/entries/${action.entry._id}`, { ...entrada })
-        .then(() => {
-          fetchData();
-          navigation.navigate(action.entry._id);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  return (
-    <EntryContext.Provider value={valor}>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Diario">
-          {(props) => (
-            <MainScreen
-              {...props}
-              entries={entries}
-              deleteEntry={deleteEntry}
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen
-          name="addEntry"
-          component={AddEntryScreen}
-          options={({ route }) => ({
-            title: route.params.title,
-            headerRight: () => (
-              <Text
-                style={styles.action}
-                onPress={() => saveEntry(route.params)}
-              >
-                Save
-              </Text>
-            ),
-          })}
-        />
-        {entries.map((entry) => (
-          <Stack.Screen
-            name={entry._id}
-            key={entry._id}
-            options={{
-              title: "",
-              headerRight: () => (
-                <Text
-                  style={styles.action}
-                  onPress={() =>
-                    navigation.navigate("addEntry", {
-                      entry,
-                      title: "Edit Entry",
-                    })
-                  }
-                >
-                  Edit
-                </Text>
-              ),
-            }}
-          >
-            {(props) => <EntryScreen {...props} entry={entry} />}
-          </Stack.Screen>
-        ))}
-      </Stack.Navigator>
-    </EntryContext.Provider>
-  );
-}
-
-function MainScreen({ navigation, entries, deleteEntry }) {
   return (
     <>
       <StatusBar style="auto" />
@@ -190,12 +78,12 @@ function MainScreen({ navigation, entries, deleteEntry }) {
           ) : (
             <View style={styles.startView}>
               <Image
-                source={require("../../assets/start.png")}
+                source={require("../../assets/startscreen.png")}
                 style={styles.startImage}
               />
               <Text style={styles.startText}>
-                Start by creating an entry using {"\n"}the
-                <Text style={{ fontWeight: "bold" }}> +Add entry</Text> button
+                Start by adding a book using {"\n"}the
+                <Text style={{ fontWeight: "bold" }}> +Add Book</Text> button
               </Text>
             </View>
           )}
@@ -203,16 +91,11 @@ function MainScreen({ navigation, entries, deleteEntry }) {
       </SafeAreaView>
     </>
   );
-}
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-  action: {
-    fontSize: 15,
-    color: "#1270DD",
-    fontWeight: "500",
-    marginRight: 14,
-    textDecorationLine: "underline",
-  },
   listSeparator: {
     height: 1,
     width: "100%",
@@ -249,8 +132,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   startImage: {
-    width: 280,
-    height: 180,
+    width: 230,
+    height: 200,
     marginBottom: 20,
     resizeMode: "cover",
   },

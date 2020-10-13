@@ -5,7 +5,19 @@ const entrySchema = mongoose.Schema({
     type: String,
   },
   description: String,
-  date: Date,
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  page: {
+    type: Number,
+    default: 0,
+  },
+  comments: [Object],
 });
 
 const Entry = mongoose.model("entries", entrySchema);

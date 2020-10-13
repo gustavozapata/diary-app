@@ -41,13 +41,7 @@ function MainScreen() {
             />
           )}
         </TouchableOpacity>
-        <View
-          style={{
-            borderBottomColor: "#bbb",
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            marginVertical: 12,
-          }}
-        ></View>
+        <View style={styles.separator}></View>
         <TouchableOpacity
           style={styles.row}
           activeOpacity={1.0}
@@ -96,6 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
+  },
+  separator: {
+    borderBottomColor: "#bbb",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 12,
   },
   row: { flexDirection: "row", justifyContent: "space-between" },
   option: {

@@ -12,4 +12,6 @@ router
   .patch(entryController.updateEntry)
   .delete(entryController.deleteEntry);
 
+router.route("/:id/comment").patch(entryController.postComment);
+
 module.exports = router;

@@ -1,35 +1,58 @@
 [
   {
-    "title": "Trip to Paris",
-    "description": "Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things.",
-    "date": "19 Aug, 2020"
+    "_id": "34324dfsfsdfd1",
+    "title": "Harry Potter II",
+    "description": "This is one of my favourite books. I'm planning on adding of all the series",
+    "date": "19 Aug, 2020",
+    "rating": 4,
+    "page": 25,
+    "comments": [
+      {
+        "user": "child",
+        "comment": "I really liked this one"
+      },
+      {
+        "user": "parent",
+        "comment": "Yep, definitely worth our time"
+      },
+      {
+        "user": "teacher",
+        "comment": "I'm glad you guys liked it'"
+      }
+    ]
   },
   {
+    "_id": "34324dfsfsdfd2",
     "title": "Trip to Amsterdam",
     "description": "Now, if we want to call this a just a trip, I think we will be isulting it. This was the trip!",
     "date": "22 Aug, 2020"
   },
   {
+    "_id": "34324dfsfsdfd3",
     "title": "Trip to Colombia",
     "description": "Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things. Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things.",
     "date": "24 Aug, 2020"
   },
   {
+    "_id": "34324dfsfsdfd4",
     "title": "Once upon a time in Hollywood",
     "description": "Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things.",
     "date": "19 Aug, 2020"
   },
   {
+    "_id": "34324dfsfsdfd5",
     "title": "Habia una vez o quizas dos veces",
     "description": "Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things.",
     "date": "22 Aug, 2020"
   },
   {
+    "_id": "34324dfsfsdfd6",
     "title": "Trip to Colombia and the south american countries around it",
     "description": "Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things.",
     "date": "24 Aug, 2020"
   },
   {
+    "_id": "34324dfsfsdfd7",
     "title": "Trip to Portugal",
     "description": "Today it’s a remarkable day at school. We decided to take a trip to the Paris and it was great. Apart from being a beautiful place, we had so much fun and we discovered amazing things.",
     "date": "19 Aug, 2020"

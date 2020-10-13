@@ -9,22 +9,16 @@ export default function EntryScreen({ entry }) {
   return (
     <ScrollView style={entryStyles.container}>
       <Text style={entryStyles.title}>{entry.title}</Text>
-      <RatingStars />
+      <RatingStars stars={entry.rating} />
       <View style={styles.pagesContainer}>
         <Text style={entryStyles.date}>{toDateString(entry.date)}</Text>
         <View style={styles.pages}>
-          <Text style={styles.pagesText}>pages 34-78</Text>
+          <Text style={styles.pagesText}>page {entry.page}</Text>
         </View>
       </View>
       <Text style={entryStyles.description}>{entry.description}</Text>
-      <View
-        style={{
-          borderBottomColor: "#bbb",
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          marginVertical: 12,
-        }}
-      />
-      <Comments />
+      <View style={styles.separator} />
+      <Comments entry={entry} />
     </ScrollView>
   );
 }
@@ -34,11 +28,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  separator: {
+    borderBottomColor: "#bbb",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: 12,
+  },
   pages: {
     borderWidth: 2,
     borderRadius: 5,
     borderColor: "#F20D44",
-    // borderStyle: "dotted",
     backgroundColor: "#EF126F",
     padding: 3,
   },
@@ -46,6 +44,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 13,
     color: "#fff",
-    // color: "#F20D44",
   },
 });
