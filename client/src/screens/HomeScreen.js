@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
             <Text
               style={styles.addEntry}
               onPress={() =>
-                navigation.navigate("addEntry", { title: "Add Entry" })
+                navigation.navigate("addEntry", { title: "Add Book" })
               }
             >
               +Add Book

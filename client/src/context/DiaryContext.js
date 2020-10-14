@@ -99,7 +99,19 @@ const diaryReducer = (state, action) => {
         }),
       };
     case ADD_PAGE:
-      return {};
+      return {
+        ...state,
+        entries: state.entries.map((entry) => {
+          if (entry._id !== action.payload.id) {
+            return entry;
+          } else {
+            return {
+              ...entry,
+              page: action.payload.page,
+            };
+          }
+        }),
+      };
     default:
       return state;
   }
@@ -173,7 +185,7 @@ export const DiaryProvider = ({ children }) => {
 
   const addRating = (id, rating, callback) => {
     axios
-      .patch(`${host}/api/entries/${id}`, rating)
+      .patch(`${host}/api/entries/${id}`, { rating })
       .then(() => {
         dispatch({
           type: ADD_RATING,
@@ -219,6 +231,18 @@ export const DiaryProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  const updatePage = (id, page) => {
+    axios
+      .patch(`${host}/api/entries/${id}`, { page })
+      .then(() => {
+        dispatch({
+          type: ADD_PAGE,
+          payload: { id, page },
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <DiaryContext.Provider
       value={{
@@ -232,6 +256,7 @@ export const DiaryProvider = ({ children }) => {
         updateComment: updateComment,
         postComment: postComment,
         addRating: addRating,
+        updatePage,
       }}
     >
       {children}

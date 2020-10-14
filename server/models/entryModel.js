@@ -14,8 +14,8 @@ const entrySchema = mongoose.Schema({
     default: 0,
   },
   page: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "0",
   },
   comments: [Object],
 });

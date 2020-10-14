@@ -17,7 +17,7 @@ const HomeStack = ({ navigation }) => {
   const Stack = createStackNavigator();
 
   const saveEntry = (action) => {
-    if (action.title === "Add Entry") {
+    if (action.title === "Add Book") {
       save(() => {
         navigation.navigate("Diario");
       });

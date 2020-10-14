@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, TextInput, View, Image } from "react-native";
 import SingleComment from "./SingleComment";
 import DiaryContext from "../context/DiaryContext";
@@ -47,9 +47,6 @@ const Comments = ({ entry }) => {
 };
 
 const styles = StyleSheet.create({
-  commentsContainer: {
-    backgroundColor: "red",
-  },
   commentsTitle: {
     marginTop: 20,
     fontSize: 25,
@@ -83,6 +80,7 @@ const styles = StyleSheet.create({
   },
   comments: {
     marginBottom: 20,
+    minHeight: 270,
   },
 });
 
