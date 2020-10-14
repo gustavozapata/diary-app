@@ -1,5 +1,6 @@
 //CONTEXT BY GORDON
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
+import AsyncStorage from "@react-native-community/async-storage";
 import { toDateString } from "../utils/utils";
 import {
   GET_BOOKS,
@@ -17,6 +18,8 @@ import {
 import axios from "axios";
 import { host } from "../config/config";
 
+const STORAGE_KEY = "diary_storage";
+
 const DiaryContext = React.createContext({});
 
 const diaryReducer = (state, action) => {
@@ -24,7 +27,7 @@ const diaryReducer = (state, action) => {
     case GET_BOOKS:
       return {
         ...state,
-        entries: action.payload,
+        entries: action.payload.entries,
       };
     case ADD_BOOK:
       return {
@@ -32,6 +35,29 @@ const diaryReducer = (state, action) => {
         bookTitle: "",
         bookDescription: "",
         entries: [...state.entries, action.payload],
+      };
+    case "set-storage":
+      try {
+        AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        return state;
+      }
+    case "get-storage":
+      return {
+        ...state,
+        entries: [
+          ...state.entries,
+          {
+            _id: action.payload._id,
+            title: action.payload.title,
+            description: action.payload.description,
+            date: new Date(action.payload.date),
+            rating: action.payload.rating,
+            page: action.payload.page,
+          },
+        ],
       };
     case EDIT_BOOK:
       return {
@@ -127,29 +153,62 @@ const initialDiaryState = {
 
 export const DiaryProvider = ({ children }) => {
   const [state, dispatch] = useReducer(diaryReducer, initialDiaryState);
+  useEffect(() => {
+    const loadStorage = async () => {
+      const storage = await AsyncStorage.getItem(STORAGE_KEY);
+      if (storage !== null && state.entries.length === 0) {
+        let initialState = JSON.parse(storage);
+        initialState.forEach((e) => {
+          dispatch({ type: "get-storage", payload: e });
+        });
+      }
+      console.log("STORAGE:: ,", storage);
+    };
+    loadStorage();
+  }, [STORAGE_KEY]);
 
   // ENTRIES
-  const getEntries = () => {
-    axios.get(`${host}/api/entries`).then((res) => {
-      dispatch({
-        type: GET_BOOKS,
-        payload: res.data.data,
-      });
-    });
+  const getEntries = async () => {
+    // await AsyncStorage.clear();
+    const storage = await AsyncStorage.getItem(STORAGE_KEY);
+    if (storage !== null) {
+      let initialState = JSON.parse(storage);
+      console.log(initialState);
+      dispatch({ type: GET_BOOKS, payload: initialState });
+    }
+    // axios.get(`${host}/api/entries`).then((res) => {
+    //   dispatch({
+    //     type: GET_BOOKS,
+    //     payload: res.data.data,
+    //   });
+    // });
   };
 
   const saveDiaryEntry = (callback) => {
-    axios
-      .post(`${host}/api/entries`, {
+    dispatch({
+      type: ADD_BOOK,
+      payload: {
+        _id: Math.floor(Math.random() * 100).toString(),
         title: state.bookTitle,
         description: state.bookDescription,
-      })
-      .then((res) => {
-        dispatch({
-          type: ADD_BOOK,
-          payload: res.data.data,
-        });
-      });
+        date: toDateString(),
+        rating: 0,
+        page: "",
+        comments: [],
+      },
+    });
+    dispatch({ type: "set-storage" }); //use this dispatch for 'edit' 'delete' too
+    // axios
+    //   .post(`${host}/api/entries`, {
+    //     title: state.bookTitle,
+    //     description: state.bookDescription,
+    //   })
+    //   .then((res) => {
+    //     dispatch({
+    //       type: ADD_BOOK,
+    //       payload: res.data.data,
+    //     });
+    //   })
 
     if (callback) callback();
   };
