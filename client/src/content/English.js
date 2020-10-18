@@ -7,6 +7,7 @@ export const EN_HomeScreen = {
   ADD_BOOK: "+Add Book",
   SAVE: "Save",
   EDIT: "Edit",
+  DELETE: "Delete",
   COMMENTS: "Comments",
   COMMENT_SWITCH_USER: "Tap to switch user",
   COMMENT_PLACEHOLDER: "Add a comment",

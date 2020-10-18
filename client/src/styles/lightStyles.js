@@ -11,4 +11,11 @@ export const LIGHT_Styles = {
   text: {
     color: "#000",
   },
+  button: {
+    color: "#000",
+    backgroundColor: "#fff",
+  },
+  separator: {
+    backgroundColor: "#ddd",
+  },
 };

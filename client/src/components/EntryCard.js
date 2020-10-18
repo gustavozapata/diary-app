@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import DiaryContext from "../context/DiaryContext";
 import { toDateString } from "../utils/utils";
 
 export default function EntryCard({ item }) {
+  const {
+    state: { theme },
+  } = useContext(DiaryContext);
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, theme.screen]}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.date}>{toDateString(item.date)}</Text>
+        <Text style={[styles.title, theme.text]}>{item.title}</Text>
+        <Text style={[styles.date, theme.text]}>{toDateString(item.date)}</Text>
       </View>
-      <Text>{`${item.description.substring(0, 47)}...`}</Text>
+      <Text style={theme.text}>{`${item.description.substring(
+        0,
+        47
+      )}...`}</Text>
     </View>
   );
 }

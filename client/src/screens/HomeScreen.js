@@ -39,6 +39,7 @@ const HomeScreen = ({ navigation }) => {
                       progress={progress}
                       dragX={dragX}
                       deleteEntry={() => deleteEntry(item._id)}
+                      label={content.DELETE}
                     />
                   )}
                 >
@@ -48,7 +49,9 @@ const HomeScreen = ({ navigation }) => {
             )}
             keyExtractor={(item) => item._id}
             showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+            ItemSeparatorComponent={() => (
+              <View style={[styles.listSeparator, theme.separator]} />
+            )}
           />
         ) : (
           <>
@@ -69,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
 
 const Header = ({ entries, navigation }) => {
   const {
-    state: { content },
+    state: { content, theme },
   } = useContext(DiaryContext);
 
   return (
@@ -83,7 +86,7 @@ const Header = ({ entries, navigation }) => {
           </View>
         )}
         <Text
-          style={styles.addEntry}
+          style={[styles.addEntry, theme.button]}
           onPress={() => navigation.navigate("addEntry", { title: "Add Book" })}
         >
           {content.ADD_BOOK}

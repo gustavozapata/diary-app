@@ -7,6 +7,7 @@ export const ES_HomeScreen = {
   ADD_BOOK: "+Nuevo Libro",
   SAVE: "Guardar",
   EDIT: "Editar",
+  DELETE: "Borrar",
   COMMENTS: "Comentarios",
   COMMENT_SWITCH_USER: "Cambiar usuario",
   COMMENT_PLACEHOLDER: "Agrega un comentario",

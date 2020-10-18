@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Animated, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function EntryAction({ progress, dragX, deleteEntry }) {
+export default function EntryAction({ progress, dragX, deleteEntry, label }) {
   const scale = dragX.interpolate({
     inputRange: [-100, 0],
     outputRange: [1, 0],
@@ -12,7 +12,7 @@ export default function EntryAction({ progress, dragX, deleteEntry }) {
     <TouchableOpacity onPress={deleteEntry}>
       <View style={styles.deleteView}>
         <Animated.Text style={[styles.deleteText, { transform: [{ scale }] }]}>
-          Delete
+          {label}
         </Animated.Text>
       </View>
     </TouchableOpacity>

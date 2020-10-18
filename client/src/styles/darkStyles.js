@@ -11,4 +11,12 @@ export const DARK_Styles = {
   text: {
     color: "#fff",
   },
+  button: {
+    color: "#fff",
+    backgroundColor: "#1C1C1D",
+    borderColor: "#fff",
+  },
+  separator: {
+    backgroundColor: "#444",
+  },
 };
