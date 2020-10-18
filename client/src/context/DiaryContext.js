@@ -17,6 +17,7 @@ import {
   SWITCH_THEME,
   SORT_TITLE,
   SORT_DATE,
+  SEARCH_TITLE,
 } from "../helpers/types";
 import axios from "axios";
 import { host } from "../config/config";
@@ -152,6 +153,26 @@ const diaryReducer = (state, action) => {
           return 0;
         }),
       };
+    case SEARCH_TITLE:
+      console.log(action.payload);
+      console.log(state.entries.length);
+      // let filtered = [...state.entries];
+      // filtered.filter(
+      //   (entry) =>
+      //     entry.title.toLowerCase().substr(0, action.payload.length) ===
+      //     action.payload.toLowerCase()
+      // );
+      return {
+        ...state,
+        entries: [
+          ...state.entries.filter(
+            (entry) =>
+              entry.title.toLowerCase().substr(0, action.payload.length) ===
+              action.payload.toLowerCase()
+          ),
+        ],
+        // entries: filtered,
+      };
     default:
       return state;
   }
@@ -253,6 +274,13 @@ export const DiaryProvider = ({ children }) => {
     });
   };
 
+  const searchByTitle = (term) => {
+    dispatch({
+      type: SEARCH_TITLE,
+      payload: term,
+    });
+  };
+
   // COMMENTS
   const loadEntry = (value) => {
     dispatch({
@@ -322,6 +350,7 @@ export const DiaryProvider = ({ children }) => {
         deleteEntry,
         sortByTitle,
         sortByDate,
+        searchByTitle,
         loadEntry,
         updateText,
         updateComment,

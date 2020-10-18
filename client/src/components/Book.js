@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
+import DiaryContext from "../context/DiaryContext";
 
 const Book = ({ book }) => {
+  const {
+    state: { theme },
+  } = useContext(DiaryContext);
   return (
-    <View style={styles.container}>
-      <Text style={styles.bookTitle}>
+    <View style={[styles.container, theme.section]}>
+      <Text style={[styles.bookTitle, theme.text]}>
         {book.volumeInfo.title.substring(0, 20)}...
       </Text>
       <Image
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   bookTitle: {
-    fontSize: 17,
+    fontSize: 15,
     fontWeight: "600",
     marginVertical: 8,
   },

@@ -64,7 +64,7 @@ const MainScreen = () => {
         {loading ? (
           <View style={styles.loadingContainer}>
             <Image
-              source={require("../../assets/loading.gif")}
+              source={require("../../assets/loading1.gif")}
               style={styles.loading}
             />
           </View>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,10 @@ const Comments = ({ entry }) => {
   const { state, postComment, updateComment } = useContext(DiaryContext);
   const { comment, content, theme } = state;
   const { comments } = entry;
+
+  useEffect(() => {
+    updateComment("");
+  }, []);
 
   const loadUser = () => {
     if (isChild) {

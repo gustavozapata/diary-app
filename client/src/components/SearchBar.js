@@ -3,9 +3,9 @@ import { StyleSheet, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DiaryContext from "../context/DiaryContext";
 
-const SearchBar = ({ placeholder, doSearch }) => {
+const SearchBar = ({ placeholder, doSearch, filter }) => {
   const {
-    state: { isDark },
+    state: { isDark, theme },
   } = useContext(DiaryContext);
   const [search, setSearch] = useState("");
 
@@ -18,12 +18,15 @@ const SearchBar = ({ placeholder, doSearch }) => {
         color={isDark ? "#fff" : "#000"}
       />
       <TextInput
-        onChangeText={(text) => setSearch(text)}
+        onChangeText={(text) => {
+          setSearch(text);
+          if (filter) filter(text);
+        }}
         placeholder={placeholder}
         placeholderTextColor="#999"
         value={search}
-        style={styles.inputSearch}
-        onSubmitEditing={() => doSearch(search)}
+        style={[styles.inputSearch, theme.text]}
+        onSubmitEditing={() => doSearch && doSearch(search)}
       />
     </View>
   );

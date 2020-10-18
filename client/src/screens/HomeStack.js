@@ -17,14 +17,16 @@ const HomeStack = ({ navigation }) => {
   const Stack = createStackNavigator();
 
   const saveEntry = (action) => {
-    if (action.title === "Add Book") {
-      save(() => {
-        navigation.navigate("Bookland");
-      });
-    } else {
-      edit(action.entry._id, () => {
-        navigation.navigate(action.entry._id);
-      });
+    if (state.bookTitle !== "") {
+      if (action.title === "Add Book") {
+        save(() => {
+          navigation.navigate("Bookland");
+        });
+      } else {
+        edit(action.entry._id, () => {
+          navigation.navigate(action.entry._id);
+        });
+      }
     }
   };
 

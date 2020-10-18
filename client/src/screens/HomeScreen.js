@@ -75,11 +75,15 @@ const Header = ({ entries, navigation }) => {
     state: { content, theme },
     sortByTitle,
     sortByDate,
+    searchByTitle,
   } = useContext(DiaryContext);
 
   return (
     <View style={screenStyles.scrollView}>
-      <SearchBar placeholder={content.SEARCH_BAR_PLACEHOLDER} />
+      <SearchBar
+        placeholder={content.SEARCH_BAR_PLACEHOLDER}
+        filter={(term) => searchByTitle(term)}
+      />
       <View style={styles.banner}>
         {entries.length > 0 && (
           <View style={{ flexDirection: "row", marginRight: 45 }}>
