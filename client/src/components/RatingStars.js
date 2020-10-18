@@ -13,8 +13,9 @@ const RatingStarts = ({ entry }) => {
         <FontAwesome
           name={`star${i < rating ? "" : "-o"}`}
           color="#FFC700"
-          size={20}
+          size={22}
           onPress={() => addRating(_id, i + 1)}
+          key={i}
         />
       ))}
     </View>

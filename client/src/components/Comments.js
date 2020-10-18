@@ -1,28 +1,45 @@
-import React, { useContext } from "react";
-import { StyleSheet, Text, TextInput, View, Image } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import SingleComment from "./SingleComment";
 import DiaryContext from "../context/DiaryContext";
 
 const Comments = ({ entry }) => {
+  const [isChild, setIsChild] = useState(true);
   const { state, postComment, updateComment } = useContext(DiaryContext);
-  const { comment } = state;
+  const { comment, content } = state;
   const { comments } = entry;
+
+  const loadUser = () => {
+    if (isChild) {
+      return require("../../assets/child.png");
+    }
+    return require("../../assets/parent.png");
+  };
 
   return (
     <View sytle={styles.commentsContainer}>
-      <Text style={styles.commentsTitle}>Comments</Text>
+      <Text style={styles.commentsTitle}>{content.COMMENTS}</Text>
       <View style={styles.addComment}>
-        <View>
-          <Image
-            style={styles.commentUser}
-            source={require(`../../assets/child.png`)}
-          />
-          {/* <Text>Swith to parent</Text> */}
-        </View>
+        <TouchableOpacity onPress={() => setIsChild(!isChild)}>
+          <Image style={styles.commentUser} source={loadUser()} />
+          <Text
+            style={styles.switchUser}
+            onPress={() => setIsChild((previousState) => !previousState)}
+          >
+            {content.COMMENT_SWITCH_USER}
+          </Text>
+        </TouchableOpacity>
         <TextInput
           multiline={true}
           style={styles.addText}
-          placeholder="Add a comment"
+          placeholder={content.COMMENT_PLACEHOLDER}
           value={comment}
           onChangeText={(value) => updateComment(value)}
         />
@@ -30,7 +47,10 @@ const Comments = ({ entry }) => {
           <Text
             style={styles.addBtn}
             onPress={() => {
-              postComment(entry._id, { user: "child", comment: comment });
+              postComment(entry._id, {
+                user: isChild ? "child" : "parent",
+                comment,
+              });
             }}
           >
             Post
@@ -38,8 +58,8 @@ const Comments = ({ entry }) => {
         )}
       </View>
       <View style={styles.comments}>
-        {comments.map((comment) => (
-          <SingleComment comment={comment} />
+        {comments.map((comment, i) => (
+          <SingleComment comment={comment} key={i} />
         ))}
       </View>
     </View>
@@ -55,8 +75,6 @@ const styles = StyleSheet.create({
   addComment: {
     marginVertical: 17,
     flexDirection: "row",
-    // justifyContent: "space-between",
-    // alignItems: "flex-end",
   },
   commentUser: {
     width: 45,
@@ -72,11 +90,22 @@ const styles = StyleSheet.create({
     maxHeight: 50,
     borderBottomWidth: 1,
     borderBottomColor: "#999",
+    zIndex: -1,
   },
   addBtn: {
     fontWeight: "700",
     fontSize: 17,
     marginTop: 10,
+    zIndex: 100,
+  },
+  switchUser: {
+    fontSize: 11,
+    position: "absolute",
+    top: 50,
+    left: -7,
+    width: 60,
+    textAlign: "center",
+    color: "#777",
   },
   comments: {
     marginBottom: 20,

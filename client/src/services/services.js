@@ -24,7 +24,7 @@ exports.createEntry = () => {
     })
     .then(() => {
       fetchData();
-      navigation.navigate("Diario");
+      navigation.navigate("Bookland");
     })
     .catch((err) => console.log(err));
 };

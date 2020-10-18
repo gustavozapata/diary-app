@@ -12,3 +12,6 @@ export const UPDATE_COMMENT = "UPDATE_COMMENT";
 
 export const ADD_RATING = "ADD_RATING";
 export const ADD_PAGE = "ADD_PAGE";
+
+export const SWITCH_LANG = "SWITCH_LANG";
+export const SWITCH_THEME = "SWITCH_THEME";

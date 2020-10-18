@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -12,6 +12,7 @@ import axios from "axios";
 import Book from "../components/Book";
 import SearchBar from "../components/SearchBar";
 import screenStyles from "../styles/screenStyles";
+import DiaryContext from "../context/DiaryContext";
 
 const LibraryScreen = () => {
   const Stack = createStackNavigator();
@@ -24,10 +25,11 @@ const LibraryScreen = () => {
 };
 
 const MainScreen = () => {
+  const {
+    state: { content },
+  } = useContext(DiaryContext);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {}, []);
 
   const doSearch = (search) => {
     if (search !== "") {
@@ -49,12 +51,15 @@ const MainScreen = () => {
         contentContainerStyle={screenStyles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Discover new adventures!</Text>
+        <Text style={styles.title}>{content.LIBRARY_TITLE}</Text>
         <Image
           source={require("../../assets/brush.png")}
           style={{ width: 210, height: 20, marginTop: -10, marginBottom: 15 }}
         />
-        <SearchBar placeholder="Search for books" doSearch={doSearch} />
+        <SearchBar
+          placeholder={content.SEARCH_BOOKS_PLACEHOLDER}
+          doSearch={doSearch}
+        />
 
         {loading ? (
           <View style={styles.loadingContainer}>
@@ -66,6 +71,7 @@ const MainScreen = () => {
         ) : (
           [
             <View
+              key="1"
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
@@ -73,7 +79,7 @@ const MainScreen = () => {
               }}
             >
               {books.length > 0 ? (
-                books.map((book) => <Book book={book} />)
+                books.map((book) => <Book book={book} key={book.id} />)
               ) : (
                 <Image
                   source={require("../../assets/library.png")}

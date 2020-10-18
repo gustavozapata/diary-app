@@ -14,9 +14,10 @@ import { toDateString } from "../utils/utils";
 import DiaryContext from "../context/DiaryContext";
 
 const EntryScreen = ({ entry }) => {
-  const { updatePage } = useContext(DiaryContext);
+  const { updatePage, state } = useContext(DiaryContext);
   const [isEdit, setIsEdit] = useState(false);
   const [page, setPage] = useState(entry.page);
+  const { content } = state;
 
   return (
     <ScrollView style={entryStyles.container}>
@@ -28,7 +29,7 @@ const EntryScreen = ({ entry }) => {
           {isEdit ? (
             <TextInput
               style={styles.addPage}
-              placeholder="page #"
+              placeholder={`${content.PAGE} #`}
               value={page}
               autoFocus={true}
               onBlur={() => setIsEdit(false)}
@@ -37,7 +38,9 @@ const EntryScreen = ({ entry }) => {
               onSubmitEditing={() => updatePage(entry._id, page)}
             />
           ) : (
-            <Text style={styles.pagesText}>page {entry.page}</Text>
+            <Text style={styles.pagesText}>
+              {content.PAGE} {entry.page}
+            </Text>
           )}
         </TouchableOpacity>
       </View>

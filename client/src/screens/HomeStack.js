@@ -6,9 +6,9 @@ import HomeScreen from "./HomeScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import DiaryContext from "../context/DiaryContext";
 
-//TODO: - USE REDUCER HOOK
 const HomeStack = ({ navigation }) => {
   const { state, save, edit, getEntries } = useContext(DiaryContext);
+  const { content } = state;
 
   useEffect(() => {
     getEntries();
@@ -19,10 +19,9 @@ const HomeStack = ({ navigation }) => {
   const saveEntry = (action) => {
     if (action.title === "Add Book") {
       save(() => {
-        navigation.navigate("Diario");
+        navigation.navigate("Bookland");
       });
     } else {
-      //edit entry
       edit(action.entry._id, () => {
         navigation.navigate(action.entry._id);
       });
@@ -31,7 +30,7 @@ const HomeStack = ({ navigation }) => {
 
   return (
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Diario">
+      <Stack.Screen name="Bookland">
         {(props) => <HomeScreen {...props} />}
       </Stack.Screen>
       <Stack.Screen
@@ -41,7 +40,7 @@ const HomeStack = ({ navigation }) => {
           title: route.params.title,
           headerRight: () => (
             <Text style={styles.action} onPress={() => saveEntry(route.params)}>
-              Save
+              {content.SAVE}
             </Text>
           ),
         })}
@@ -55,6 +54,7 @@ const HomeStack = ({ navigation }) => {
             headerRight: () => (
               <Text
                 style={styles.action}
+                key={entry._id}
                 onPress={() =>
                   navigation.navigate("addEntry", {
                     entry,
@@ -62,7 +62,7 @@ const HomeStack = ({ navigation }) => {
                   })
                 }
               >
-                Edit
+                {content.EDIT}
               </Text>
             ),
           }}

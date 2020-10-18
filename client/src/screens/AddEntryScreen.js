@@ -7,6 +7,7 @@ import { toDateString } from "../utils/utils";
 
 export default function AddEntryScreen({ route }) {
   const { loadEntry, updateText, state } = useContext(DiaryContext);
+  const { content } = state;
 
   useEffect(() => {
     if (route.params && route.params.entry) {
@@ -26,7 +27,7 @@ export default function AddEntryScreen({ route }) {
       <TextInput
         style={entryStyles.title}
         multiline={true}
-        placeholder="Book Title"
+        placeholder={content.BOOK_TITLE_PLACEHOLDER}
         value={state.bookTitle}
         autoFocus={true}
         onChangeText={(value) => updateText(UPDATE_TITLE, value)}
@@ -35,7 +36,7 @@ export default function AddEntryScreen({ route }) {
       <TextInput
         multiline={true}
         style={entryStyles.description}
-        placeholder="Brief description of the book"
+        placeholder={content.BOOK_DESC_PLACEHOLDER}
         value={state.bookDescription}
         onChangeText={(value) => updateText(UPDATE_DESC, value)}
       />

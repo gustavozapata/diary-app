@@ -13,9 +13,15 @@ import {
   UPDATE_COMMENT,
   ADD_RATING,
   ADD_PAGE,
+  SWITCH_LANG,
+  SWITCH_THEME,
 } from "../helpers/types";
 import axios from "axios";
 import { host } from "../config/config";
+import { EN_HomeScreen } from "../content/English";
+import { ES_HomeScreen } from "../content/Spanish";
+import { DARK_Styles } from "../styles/darkStyles";
+import { LIGHT_Styles } from "../styles/lightStyles";
 
 const DiaryContext = React.createContext({});
 
@@ -112,17 +118,33 @@ const diaryReducer = (state, action) => {
           }
         }),
       };
+    case SWITCH_LANG:
+      return {
+        ...state,
+        language: action.payload,
+        content: action.payload === "English" ? EN_HomeScreen : ES_HomeScreen,
+      };
+    case SWITCH_THEME:
+      return {
+        ...state,
+        isDark: !state.isDark,
+        theme: !state.isDark ? DARK_Styles : LIGHT_Styles,
+      };
     default:
       return state;
   }
 };
 
 const initialDiaryState = {
+  language: "English",
+  isDark: false,
+  theme: LIGHT_Styles,
   bookTitle: "",
   bookDescription: "",
   bookDate: toDateString(),
   entries: [],
   comment: "",
+  content: EN_HomeScreen,
 };
 
 export const DiaryProvider = ({ children }) => {
@@ -243,6 +265,19 @@ export const DiaryProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  const switchLanguage = (lang) => {
+    dispatch({
+      type: SWITCH_LANG,
+      payload: lang,
+    });
+  };
+
+  const switchTheme = () => {
+    dispatch({
+      type: SWITCH_THEME,
+    });
+  };
+
   return (
     <DiaryContext.Provider
       value={{
@@ -257,6 +292,8 @@ export const DiaryProvider = ({ children }) => {
         postComment: postComment,
         addRating: addRating,
         updatePage,
+        switchLanguage,
+        switchTheme,
       }}
     >
       {children}

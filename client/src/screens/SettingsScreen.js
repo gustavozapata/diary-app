@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Switch } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Entypo from "@expo/vector-icons/Entypo";
+import DiaryContext from "../context/DiaryContext";
 
-export default function SettingsScreen() {
+const SettingsScreen = () => {
   const Stack = createStackNavigator();
 
   return (
@@ -11,72 +12,65 @@ export default function SettingsScreen() {
       <Stack.Screen name="Settings" component={MainScreen} />
     </Stack.Navigator>
   );
-}
+};
 
-function MainScreen() {
-  const [settings, setSettings] = useState({
-    language: "English",
-    theme: "light",
-  });
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+const MainScreen = () => {
+  const { state, switchTheme } = useContext(DiaryContext);
+  const { content, isDark, theme } = state;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>LANGUAGE</Text>
-      <View style={styles.section}>
-        <TouchableOpacity
-          style={styles.row}
-          activeOpacity={1.0}
-          onPress={() => setSettings({ ...settings, language: "English" })}
-        >
-          <Text style={styles.option}>English</Text>
-          {settings.language === "English" && (
-            <Entypo
-              name="check"
-              color="#347FF6"
-              size={23}
-              style={{ marginTop: 5 }}
-            />
-          )}
-        </TouchableOpacity>
+    <View style={[styles.container, theme.container]}>
+      <Text style={styles.title}>{content.LANGUAGE}</Text>
+      <View style={[styles.section, theme.section]}>
+        {LanguageOption("English")}
         <View style={styles.separator}></View>
-        <TouchableOpacity
-          style={styles.row}
-          activeOpacity={1.0}
-          onPress={() => setSettings({ ...settings, language: "Spanish" })}
-        >
-          <Text style={styles.option}>Spanish</Text>
-          {settings.language === "Spanish" && (
-            <Entypo
-              name="check"
-              color="#347FF6"
-              size={23}
-              style={{ marginTop: 5 }}
-            />
-          )}
-        </TouchableOpacity>
+        {LanguageOption("Spanish")}
       </View>
-      <Text style={styles.title}>THEME</Text>
-      <View style={styles.section}>
+      <Text style={styles.title}>{content.THEME}</Text>
+      <View style={[styles.section, theme.section]}>
         <View style={styles.row}>
-          <Text style={styles.option}>Dark Mode</Text>
+          <Text style={[styles.option, theme.text]}>{content.DARK_MODE}</Text>
           <Switch
             trackColor={{ false: "#767577", true: "#36CE38" }}
-            thumbColor={isEnabled ? "#fff" : "#fff"}
+            thumbColor={isDark ? "#fff" : "#fff"}
             ios_backgroundColor="#E9E9EB"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
+            onValueChange={switchTheme}
+            value={state.isDark}
           />
         </View>
       </View>
     </View>
   );
-}
+};
+
+const LanguageOption = (lang) => {
+  const { state, switchLanguage } = useContext(DiaryContext);
+  const { theme } = state;
+
+  return (
+    <TouchableOpacity
+      style={styles.row}
+      activeOpacity={1.0}
+      onPress={() => switchLanguage(lang)}
+    >
+      <Text style={[styles.option, theme.text]}>{lang}</Text>
+      {state.language === lang && (
+        <Entypo
+          name="check"
+          color="#347FF6"
+          size={23}
+          style={{ marginTop: 5 }}
+        />
+      )}
+    </TouchableOpacity>
+  );
+};
+
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 24,
   },
   title: {
@@ -87,7 +81,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   section: {
-    backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
   },

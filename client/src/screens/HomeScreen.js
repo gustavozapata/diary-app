@@ -7,7 +7,6 @@ import {
   Image,
   FlatList,
   SafeAreaView,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import EntryCard from "../components/EntryCard";
@@ -17,79 +16,80 @@ import SearchBar from "../components/SearchBar";
 import DiaryContext from "../context/DiaryContext";
 import screenStyles from "../styles/screenStyles";
 
-//FIXME: offline mode
-// import entriesData from "../data/entries.json";
-
 const HomeScreen = ({ navigation }) => {
   const { state, deleteEntry } = useContext(DiaryContext);
-  const { entries } = state;
+  const { entries, content, theme } = state;
 
   return (
     <>
       <StatusBar style="auto" />
-      <SafeAreaView style={screenStyles.safeArea}>
-        <ScrollView
-          contentContainerStyle={screenStyles.scrollView}
-          showsVerticalScrollIndicator={false}
-        >
-          <SearchBar placeholder="Search by title" />
-          <View style={styles.banner}>
-            {entries.length > 0 && (
-              <View style={{ flexDirection: "row", marginRight: 45 }}>
-                <Text style={styles.sort}>Sort by Title</Text>
-                <Text style={styles.sort}>Sort by Date</Text>
-              </View>
+      <SafeAreaView style={[screenStyles.safeArea, theme.screen]}>
+        {entries.length > 0 ? (
+          <FlatList
+            data={entries}
+            ListHeaderComponent={
+              <Header entries={entries} navigation={navigation} />
+            }
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => navigation.navigate(item._id)}>
+                {/* https://docs.swmansion.com/react-native-gesture-handler/docs/#installation */}
+                <Swipeable
+                  renderRightActions={(progress, dragX) => (
+                    <EntryAction
+                      progress={progress}
+                      dragX={dragX}
+                      deleteEntry={() => deleteEntry(item._id)}
+                    />
+                  )}
+                >
+                  <EntryCard item={item} navigation={navigation} />
+                </Swipeable>
+              </TouchableOpacity>
             )}
-            <Text
-              style={styles.addEntry}
-              onPress={() =>
-                navigation.navigate("addEntry", { title: "Add Book" })
-              }
-            >
-              +Add Book
-            </Text>
-          </View>
-          {entries.length > 0 ? (
-            <FlatList
-              data={entries}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => navigation.navigate(item._id)}>
-                  {/* https://docs.swmansion.com/react-native-gesture-handler/docs/#installation */}
-                  <Swipeable
-                    renderRightActions={(progress, dragX) => (
-                      <EntryAction
-                        progress={progress}
-                        dragX={dragX}
-                        deleteEntry={() => deleteEntry(item._id)}
-                      />
-                    )}
-                    key={item._id}
-                  >
-                    <EntryCard item={item} navigation={navigation} />
-                  </Swipeable>
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
-              ItemSeparatorComponent={() => (
-                <View style={styles.listSeparator} />
-              )}
-            />
-          ) : (
+            keyExtractor={(item) => item._id}
+            showsVerticalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+          />
+        ) : (
+          <>
+            <Header entries={entries} navigation={navigation} />
             <View style={styles.startView}>
               <Image
-                source={require("../../assets/startscreen.png")}
+                source={require("../../assets/startscreen2.png")}
                 style={styles.startImage}
               />
-              <Text style={styles.startText}>
-                Start by adding a book using {"\n"}the
-                <Text style={{ fontWeight: "bold" }}> +Add Book</Text> button
-              </Text>
+              <Text style={styles.startText}>{content.START_MSG}</Text>
             </View>
-          )}
-        </ScrollView>
+          </>
+        )}
       </SafeAreaView>
     </>
+  );
+};
+
+const Header = ({ entries, navigation }) => {
+  const {
+    state: { content },
+  } = useContext(DiaryContext);
+
+  return (
+    <View style={screenStyles.scrollView}>
+      <SearchBar placeholder={content.SEARCH_BAR_PLACEHOLDER} />
+      <View style={styles.banner}>
+        {entries.length > 0 && (
+          <View style={{ flexDirection: "row", marginRight: 45 }}>
+            <Text style={styles.sort}>{content.SORT_TITLE}</Text>
+            <Text style={styles.sort}>{content.SORT_DATE}</Text>
+          </View>
+        )}
+        <Text
+          style={styles.addEntry}
+          onPress={() => navigation.navigate("addEntry", { title: "Add Book" })}
+        >
+          {content.ADD_BOOK}
+        </Text>
+      </View>
+    </View>
   );
 };
 
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     color: "#000",
     padding: 5,
+    height: 30,
   },
   sort: {
     fontSize: 12,
@@ -139,8 +140,10 @@ const styles = StyleSheet.create({
   },
   startText: {
     fontSize: 16,
+    fontWeight: "500",
     color: "#888",
     lineHeight: 25,
     textAlign: "center",
+    width: 250,
   },
 });
