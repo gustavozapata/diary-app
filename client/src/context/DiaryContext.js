@@ -30,7 +30,7 @@ import { LIGHT_Styles } from "../styles/lightStyles";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const STORAGE_KEY = "settings_storage";
-const STORAGE_THEME = "theme_storage";
+// const STORAGE_THEME = "theme_storage";
 
 const DiaryContext = React.createContext({});
 
@@ -135,7 +135,10 @@ const diaryReducer = (state, action) => {
       };
     case LOAD_LANG:
       try {
-        AsyncStorage.setItem(STORAGE_KEY, action.payload);
+        AsyncStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ theme: state.isDark, language: action.payload })
+        );
       } catch (err) {
         console.log(err);
       } finally {
@@ -149,7 +152,10 @@ const diaryReducer = (state, action) => {
       };
     case LOAD_THEME:
       try {
-        AsyncStorage.setItem(STORAGE_THEME, JSON.stringify(action.payload));
+        AsyncStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ language: state.language, theme: action.payload })
+        );
       } catch (err) {
         console.log(err);
       } finally {
@@ -209,30 +215,24 @@ export const DiaryProvider = ({ children }) => {
   const [state, dispatch] = useReducer(diaryReducer, initialDiaryState);
 
   useEffect(() => {
+    // AsyncStorage.clear();
     const loadSettings = async () => {
       const storage = await AsyncStorage.getItem(STORAGE_KEY);
+      console.log(storage);
       if (storage !== null) {
+        let settings = JSON.parse(storage);
         dispatch({
           type: SWITCH_LANG,
-          payload: storage,
+          payload: settings.language,
+        });
+        dispatch({
+          type: SWITCH_THEME,
+          payload: settings.theme,
         });
       }
     };
     loadSettings();
   }, [STORAGE_KEY]);
-
-  useEffect(() => {
-    const loadSettings = async () => {
-      const storage = await AsyncStorage.getItem(STORAGE_THEME);
-      if (storage !== null) {
-        dispatch({
-          type: SWITCH_THEME,
-          payload: JSON.parse(storage),
-        });
-      }
-    };
-    loadSettings();
-  }, [STORAGE_THEME]);
 
   // ENTRIES
   const getEntries = () => {
