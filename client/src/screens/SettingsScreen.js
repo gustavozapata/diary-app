@@ -34,8 +34,8 @@ const MainScreen = () => {
             trackColor={{ false: "#767577", true: "#36CE38" }}
             thumbColor={isDark ? "#fff" : "#fff"}
             ios_backgroundColor="#E9E9EB"
-            onValueChange={switchTheme}
-            value={state.isDark}
+            onValueChange={() => switchTheme(!isDark)}
+            value={isDark}
           />
         </View>
       </View>

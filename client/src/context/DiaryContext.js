@@ -1,5 +1,5 @@
 //CONTEXT BY GORDON
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import { toDateString } from "../utils/utils";
 import {
   GET_BOOKS,
@@ -18,6 +18,8 @@ import {
   SORT_TITLE,
   SORT_DATE,
   SEARCH_TITLE,
+  LOAD_LANG,
+  LOAD_THEME,
 } from "../helpers/types";
 import axios from "axios";
 import { host } from "../config/config";
@@ -25,6 +27,10 @@ import { EN_HomeScreen } from "../content/English";
 import { ES_HomeScreen } from "../content/Spanish";
 import { DARK_Styles } from "../styles/darkStyles";
 import { LIGHT_Styles } from "../styles/lightStyles";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const STORAGE_KEY = "settings_storage";
+const STORAGE_THEME = "theme_storage";
 
 const DiaryContext = React.createContext({});
 
@@ -127,12 +133,28 @@ const diaryReducer = (state, action) => {
         language: action.payload,
         content: action.payload === "English" ? EN_HomeScreen : ES_HomeScreen,
       };
+    case LOAD_LANG:
+      try {
+        AsyncStorage.setItem(STORAGE_KEY, action.payload);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        return state;
+      }
     case SWITCH_THEME:
       return {
         ...state,
-        isDark: !state.isDark,
-        theme: !state.isDark ? DARK_Styles : LIGHT_Styles,
+        isDark: action.payload,
+        theme: action.payload ? DARK_Styles : LIGHT_Styles,
       };
+    case LOAD_THEME:
+      try {
+        AsyncStorage.setItem(STORAGE_THEME, JSON.stringify(action.payload));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        return state;
+      }
     case SORT_TITLE:
       return {
         ...state,
@@ -156,12 +178,6 @@ const diaryReducer = (state, action) => {
     case SEARCH_TITLE:
       console.log(action.payload);
       console.log(state.entries.length);
-      // let filtered = [...state.entries];
-      // filtered.filter(
-      //   (entry) =>
-      //     entry.title.toLowerCase().substr(0, action.payload.length) ===
-      //     action.payload.toLowerCase()
-      // );
       return {
         ...state,
         entries: [
@@ -171,7 +187,6 @@ const diaryReducer = (state, action) => {
               action.payload.toLowerCase()
           ),
         ],
-        // entries: filtered,
       };
     default:
       return state;
@@ -192,6 +207,32 @@ const initialDiaryState = {
 
 export const DiaryProvider = ({ children }) => {
   const [state, dispatch] = useReducer(diaryReducer, initialDiaryState);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      const storage = await AsyncStorage.getItem(STORAGE_KEY);
+      if (storage !== null) {
+        dispatch({
+          type: SWITCH_LANG,
+          payload: storage,
+        });
+      }
+    };
+    loadSettings();
+  }, [STORAGE_KEY]);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      const storage = await AsyncStorage.getItem(STORAGE_THEME);
+      if (storage !== null) {
+        dispatch({
+          type: SWITCH_THEME,
+          payload: JSON.parse(storage),
+        });
+      }
+    };
+    loadSettings();
+  }, [STORAGE_THEME]);
 
   // ENTRIES
   const getEntries = () => {
@@ -332,11 +373,20 @@ export const DiaryProvider = ({ children }) => {
       type: SWITCH_LANG,
       payload: lang,
     });
+    dispatch({
+      type: LOAD_LANG,
+      payload: lang,
+    });
   };
 
-  const switchTheme = () => {
+  const switchTheme = (theme) => {
     dispatch({
       type: SWITCH_THEME,
+      payload: theme,
+    });
+    dispatch({
+      type: LOAD_THEME,
+      payload: theme,
     });
   };
 
@@ -344,9 +394,9 @@ export const DiaryProvider = ({ children }) => {
     <DiaryContext.Provider
       value={{
         state: state,
-        getEntries: getEntries,
         save: saveDiaryEntry,
         edit: editDiaryEntry,
+        getEntries,
         deleteEntry,
         sortByTitle,
         sortByDate,
