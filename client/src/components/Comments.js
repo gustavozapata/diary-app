@@ -13,7 +13,7 @@ import DiaryContext from "../context/DiaryContext";
 const Comments = ({ entry }) => {
   const [isChild, setIsChild] = useState(true);
   const { state, postComment, updateComment } = useContext(DiaryContext);
-  const { comment, content } = state;
+  const { comment, content, theme } = state;
   const { comments } = entry;
 
   const loadUser = () => {
@@ -24,11 +24,14 @@ const Comments = ({ entry }) => {
   };
 
   return (
-    <View sytle={styles.commentsContainer}>
+    <View>
       <Text style={styles.commentsTitle}>{content.COMMENTS}</Text>
       <View style={styles.addComment}>
         <TouchableOpacity onPress={() => setIsChild(!isChild)}>
-          <Image style={styles.commentUser} source={loadUser()} />
+          <Image
+            style={[styles.commentUser, theme.border]}
+            source={loadUser()}
+          />
           <Text
             style={styles.switchUser}
             onPress={() => setIsChild((previousState) => !previousState)}
@@ -38,14 +41,15 @@ const Comments = ({ entry }) => {
         </TouchableOpacity>
         <TextInput
           multiline={true}
-          style={styles.addText}
+          style={[styles.addText, theme.text]}
           placeholder={content.COMMENT_PLACEHOLDER}
+          placeholderTextColor="#999"
           value={comment}
           onChangeText={(value) => updateComment(value)}
         />
         {comment.length > 0 && (
           <Text
-            style={styles.addBtn}
+            style={[styles.addBtn, theme.text]}
             onPress={() => {
               postComment(entry._id, {
                 user: isChild ? "child" : "parent",
@@ -53,7 +57,7 @@ const Comments = ({ entry }) => {
               });
             }}
           >
-            Post
+            {content.POST}
           </Text>
         )}
       </View>

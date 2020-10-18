@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import DiaryContext from "../context/DiaryContext";
 
 const SearchBar = ({ placeholder, doSearch }) => {
+  const {
+    state: { isDark },
+  } = useContext(DiaryContext);
   const [search, setSearch] = useState("");
 
   return (
     <View style={styles.searchBar}>
-      <Ionicons name="ios-search" size={25} style={{ marginTop: 4 }} />
+      <Ionicons
+        name="ios-search"
+        size={25}
+        style={{ marginTop: 4 }}
+        color={isDark ? "#fff" : "#000"}
+      />
       <TextInput
         onChangeText={(text) => setSearch(text)}
         placeholder={placeholder}
+        placeholderTextColor="#999"
         value={search}
         style={styles.inputSearch}
         onSubmitEditing={() => doSearch(search)}

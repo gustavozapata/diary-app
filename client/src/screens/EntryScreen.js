@@ -17,11 +17,11 @@ const EntryScreen = ({ entry }) => {
   const { updatePage, state } = useContext(DiaryContext);
   const [isEdit, setIsEdit] = useState(false);
   const [page, setPage] = useState(entry.page);
-  const { content } = state;
+  const { content, theme } = state;
 
   return (
-    <ScrollView style={entryStyles.container}>
-      <Text style={entryStyles.title}>{entry.title}</Text>
+    <ScrollView style={[entryStyles.container, theme.screen]}>
+      <Text style={[entryStyles.title, theme.text]}>{entry.title}</Text>
       <RatingStars entry={entry} />
       <View style={styles.pagesContainer}>
         <Text style={entryStyles.date}>{toDateString(entry.date)}</Text>
@@ -44,7 +44,9 @@ const EntryScreen = ({ entry }) => {
           )}
         </TouchableOpacity>
       </View>
-      <Text style={entryStyles.description}>{entry.description}</Text>
+      <Text style={[entryStyles.description, theme.text]}>
+        {entry.description}
+      </Text>
       <View style={styles.separator} />
       <Comments entry={entry} />
     </ScrollView>

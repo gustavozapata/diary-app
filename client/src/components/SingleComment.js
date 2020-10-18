@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
+import DiaryContext from "../context/DiaryContext";
 
 const SingleComment = ({ comment }) => {
+  const {
+    state: { theme },
+  } = useContext(DiaryContext);
+
   const loadUser = (user) => {
     switch (user) {
       case "child":
@@ -20,8 +25,11 @@ const SingleComment = ({ comment }) => {
         comment.user === "teacher" ? { alignItems: "flex-end" } : null,
       ]}
     >
-      <Text style={styles.comment}>{comment.comment}</Text>
-      <Image style={styles.iconComment} source={loadUser(comment.user)} />
+      <Text style={[styles.comment, theme.comment]}>{comment.comment}</Text>
+      <Image
+        style={[styles.iconComment, theme.border]}
+        source={loadUser(comment.user)}
+      />
     </View>
   );
 };

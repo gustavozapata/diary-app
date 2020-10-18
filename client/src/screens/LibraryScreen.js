@@ -26,7 +26,7 @@ const LibraryScreen = () => {
 
 const MainScreen = () => {
   const {
-    state: { content },
+    state: { content, theme },
   } = useContext(DiaryContext);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,12 +46,12 @@ const MainScreen = () => {
   };
 
   return (
-    <SafeAreaView style={screenStyles.safeArea}>
+    <SafeAreaView style={[screenStyles.safeArea, theme.screen]}>
       <ScrollView
         contentContainerStyle={screenStyles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{content.LIBRARY_TITLE}</Text>
+        <Text style={[styles.title, theme.text]}>{content.LIBRARY_TITLE}</Text>
         <Image
           source={require("../../assets/brush.png")}
           style={{ width: 210, height: 20, marginTop: -10, marginBottom: 15 }}
@@ -82,7 +82,7 @@ const MainScreen = () => {
                 books.map((book) => <Book book={book} key={book.id} />)
               ) : (
                 <Image
-                  source={require("../../assets/library.png")}
+                  source={require("../../assets/library2.png")}
                   style={styles.image}
                 />
               )}

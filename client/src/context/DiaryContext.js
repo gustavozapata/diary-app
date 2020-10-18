@@ -15,6 +15,8 @@ import {
   ADD_PAGE,
   SWITCH_LANG,
   SWITCH_THEME,
+  SORT_TITLE,
+  SORT_DATE,
 } from "../helpers/types";
 import axios from "axios";
 import { host } from "../config/config";
@@ -130,6 +132,26 @@ const diaryReducer = (state, action) => {
         isDark: !state.isDark,
         theme: !state.isDark ? DARK_Styles : LIGHT_Styles,
       };
+    case SORT_TITLE:
+      return {
+        ...state,
+        entries: state.entries.slice().sort((a, b) => {
+          var aTitle = a.title.toLowerCase(),
+            bTitle = b.title.toLowerCase();
+          if (aTitle < bTitle) return -1;
+          if (aTitle > bTitle) return 1;
+          return 0;
+        }),
+      };
+    case SORT_DATE:
+      return {
+        ...state,
+        entries: state.entries.slice().sort((a, b) => {
+          if (a.date < b.date) return -1;
+          if (a.date > b.date) return 1;
+          return 0;
+        }),
+      };
     default:
       return state;
   }
@@ -219,6 +241,18 @@ export const DiaryProvider = ({ children }) => {
     if (callback) callback();
   };
 
+  const sortByTitle = () => {
+    dispatch({
+      type: SORT_TITLE,
+    });
+  };
+
+  const sortByDate = () => {
+    dispatch({
+      type: SORT_DATE,
+    });
+  };
+
   // COMMENTS
   const loadEntry = (value) => {
     dispatch({
@@ -285,12 +319,14 @@ export const DiaryProvider = ({ children }) => {
         getEntries: getEntries,
         save: saveDiaryEntry,
         edit: editDiaryEntry,
-        deleteEntry: deleteEntry,
-        loadEntry: loadEntry,
-        updateText: updateText,
-        updateComment: updateComment,
-        postComment: postComment,
-        addRating: addRating,
+        deleteEntry,
+        sortByTitle,
+        sortByDate,
+        loadEntry,
+        updateText,
+        updateComment,
+        postComment,
+        addRating,
         updatePage,
         switchLanguage,
         switchTheme,

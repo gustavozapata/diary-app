@@ -73,6 +73,8 @@ const HomeScreen = ({ navigation }) => {
 const Header = ({ entries, navigation }) => {
   const {
     state: { content, theme },
+    sortByTitle,
+    sortByDate,
   } = useContext(DiaryContext);
 
   return (
@@ -81,8 +83,12 @@ const Header = ({ entries, navigation }) => {
       <View style={styles.banner}>
         {entries.length > 0 && (
           <View style={{ flexDirection: "row", marginRight: 45 }}>
-            <Text style={styles.sort}>{content.SORT_TITLE}</Text>
-            <Text style={styles.sort}>{content.SORT_DATE}</Text>
+            <Text style={styles.sort} onPress={sortByTitle}>
+              {content.SORT_TITLE}
+            </Text>
+            <Text style={styles.sort} onPress={sortByDate}>
+              {content.SORT_DATE}
+            </Text>
           </View>
         )}
         <Text

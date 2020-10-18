@@ -7,7 +7,7 @@ import { toDateString } from "../utils/utils";
 
 export default function AddEntryScreen({ route }) {
   const { loadEntry, updateText, state } = useContext(DiaryContext);
-  const { content } = state;
+  const { content, theme } = state;
 
   useEffect(() => {
     if (route.params && route.params.entry) {
@@ -23,11 +23,12 @@ export default function AddEntryScreen({ route }) {
   }, []);
 
   return (
-    <ScrollView style={entryStyles.container}>
+    <ScrollView style={[entryStyles.container, theme.screen]}>
       <TextInput
-        style={entryStyles.title}
+        style={[entryStyles.title, theme.text]}
         multiline={true}
         placeholder={content.BOOK_TITLE_PLACEHOLDER}
+        placeholderTextColor="#999"
         value={state.bookTitle}
         autoFocus={true}
         onChangeText={(value) => updateText(UPDATE_TITLE, value)}
@@ -35,8 +36,9 @@ export default function AddEntryScreen({ route }) {
       <Text style={entryStyles.date}>{state.bookDate}</Text>
       <TextInput
         multiline={true}
-        style={entryStyles.description}
+        style={[entryStyles.description, theme.text]}
         placeholder={content.BOOK_DESC_PLACEHOLDER}
+        placeholderTextColor="#999"
         value={state.bookDescription}
         onChangeText={(value) => updateText(UPDATE_DESC, value)}
       />

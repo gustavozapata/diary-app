@@ -14,8 +14,17 @@ export const LIGHT_Styles = {
   button: {
     color: "#000",
     backgroundColor: "#fff",
+    borderColor: "#000",
   },
   separator: {
     backgroundColor: "#ddd",
+  },
+  comment: {
+    backgroundColor: "#fcfcfc",
+    shadowColor: "#ddd",
+    color: "#000",
+  },
+  border: {
+    borderColor: "#000",
   },
 };

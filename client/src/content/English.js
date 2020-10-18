@@ -11,6 +11,7 @@ export const EN_HomeScreen = {
   COMMENTS: "Comments",
   COMMENT_SWITCH_USER: "Tap to switch user",
   COMMENT_PLACEHOLDER: "Add a comment",
+  POST: "Post",
   PAGE: "page",
   BOOK_TITLE_PLACEHOLDER: "Book Title",
   BOOK_DESC_PLACEHOLDER: "Brief description of the book",
