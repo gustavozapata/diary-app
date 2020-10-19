@@ -6,13 +6,22 @@ const Book = ({ book }) => {
   const {
     state: { theme },
   } = useContext(DiaryContext);
+
   return (
     <View style={[styles.container, theme.section]}>
       <Text style={[styles.bookTitle, theme.text]}>
-        {book.volumeInfo.title.substring(0, 20)}...
+        {book.volumeInfo.title.length > 19
+          ? book.volumeInfo.title.substring(0, 23) + "..."
+          : book.volumeInfo.title}
       </Text>
       <Image
-        source={{ uri: book.volumeInfo.imageLinks.thumbnail }}
+        source={
+          book.volumeInfo.imageLinks
+            ? {
+                uri: book.volumeInfo.imageLinks.thumbnail,
+              }
+            : require("../../assets/nofound.png")
+        }
         style={styles.bookCover}
       />
     </View>

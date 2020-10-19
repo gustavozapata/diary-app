@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   View,
@@ -8,6 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import EntryCard from "../components/EntryCard";
 import Swipeable from "react-native-gesture-handler/Swipeable";
@@ -18,11 +18,11 @@ import screenStyles from "../styles/screenStyles";
 
 const HomeScreen = ({ navigation }) => {
   const { state, deleteEntry } = useContext(DiaryContext);
-  const { entries, content, theme } = state;
+  const { entries, content, theme, isDark } = state;
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar barStyle={isDark ? "light-content" : "default"} />
       <SafeAreaView style={[screenStyles.safeArea, theme.screen]}>
         {entries.length > 0 ? (
           <FlatList

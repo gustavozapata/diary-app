@@ -34,10 +34,10 @@ const Index = () => {
           },
         })}
         tabBarOptions={{
-          activeTintColor: isDark ? "#fff" : "blue",
-          inactiveTintColor: isDark ? "#777" : "gray",
+          activeTintColor: isDark ? "#0F8DE8" : "blue",
+          inactiveTintColor: isDark ? "#666" : "gray",
           style: {
-            backgroundColor: isDark ? "#1C1C1D" : "#fff",
+            backgroundColor: isDark ? "#0F1129" : "#fff",
           },
         }}
       >

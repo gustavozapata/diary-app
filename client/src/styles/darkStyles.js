@@ -7,21 +7,22 @@ export const DARK_Styles = {
     // backgroundColor: "#010101",
   },
   section: {
-    backgroundColor: "#1C1C1D",
+    backgroundColor: "#0F1129",
   },
   text: {
     color: "#fff",
   },
   button: {
     color: "#fff",
-    backgroundColor: "#1C1C1D",
+    backgroundColor: "#0F1129",
     borderColor: "#fff",
+    borderWidth: 1,
   },
   separator: {
     backgroundColor: "#444",
   },
   comment: {
-    backgroundColor: "#1C1C1D",
+    backgroundColor: "#0F1129",
     shadowColor: "#111",
     color: "#fff",
   },

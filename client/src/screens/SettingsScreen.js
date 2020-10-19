@@ -5,11 +5,26 @@ import Entypo from "@expo/vector-icons/Entypo";
 import DiaryContext from "../context/DiaryContext";
 
 const SettingsScreen = () => {
+  const {
+    state: { isDark, content },
+  } = useContext(DiaryContext);
+
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Settings" component={MainScreen} />
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: isDark ? "#0F1129" : "#fff",
+        },
+        headerTintColor: isDark ? "#fff" : "#000",
+      }}
+    >
+      <Stack.Screen
+        name="Settings"
+        component={MainScreen}
+        options={{ title: content.SETTINGS }}
+      />
     </Stack.Navigator>
   );
 };

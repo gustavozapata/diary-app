@@ -15,11 +15,26 @@ import screenStyles from "../styles/screenStyles";
 import DiaryContext from "../context/DiaryContext";
 
 const LibraryScreen = () => {
+  const {
+    state: { isDark, content },
+  } = useContext(DiaryContext);
+
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Library" component={MainScreen} />
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: isDark ? "#0F1129" : "#fff",
+        },
+        headerTintColor: isDark ? "#fff" : "#000",
+      }}
+    >
+      <Stack.Screen
+        name="Library"
+        component={MainScreen}
+        options={{ title: content.LIBRARY }}
+      />
     </Stack.Navigator>
   );
 };
@@ -78,7 +93,7 @@ const MainScreen = () => {
                 justifyContent: "center",
               }}
             >
-              {books.length > 0 ? (
+              {books && books.length > 0 ? (
                 books.map((book) => <Book book={book} key={book.id} />)
               ) : (
                 <Image

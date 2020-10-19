@@ -35,7 +35,7 @@ const HomeStack = ({ navigation }) => {
       initialRouteName="Home"
       screenOptions={{
         headerStyle: {
-          backgroundColor: isDark ? "#1C1C1D" : "#fff",
+          backgroundColor: isDark ? "#0F1129" : "#fff",
         },
         headerTintColor: isDark ? "#fff" : "#000",
       }}
