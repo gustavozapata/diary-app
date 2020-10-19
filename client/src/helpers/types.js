@@ -5,7 +5,6 @@ export const DELETE_BOOK = "DELETE_BOOK";
 
 export const SORT_TITLE = "SORT_TITLE";
 export const SORT_DATE = "SORT_DATE";
-export const SEARCH_TITLE = "SEARCH_TITLE";
 
 export const LOAD_ENTRY = "LOAD_ENTRY";
 export const UPDATE_TITLE = "UPDATE_TITLE";

@@ -17,7 +17,6 @@ import {
   SWITCH_THEME,
   SORT_TITLE,
   SORT_DATE,
-  SEARCH_TITLE,
   LOAD_LANG,
   LOAD_THEME,
 } from "../helpers/types";
@@ -30,7 +29,6 @@ import { LIGHT_Styles } from "../styles/lightStyles";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const STORAGE_KEY = "settings_storage";
-// const STORAGE_THEME = "theme_storage";
 
 const DiaryContext = React.createContext({});
 
@@ -181,19 +179,6 @@ const diaryReducer = (state, action) => {
           return 0;
         }),
       };
-    case SEARCH_TITLE:
-      console.log(action.payload);
-      console.log(state.entries.length);
-      return {
-        ...state,
-        entries: [
-          ...state.entries.filter(
-            (entry) =>
-              entry.title.toLowerCase().substr(0, action.payload.length) ===
-              action.payload.toLowerCase()
-          ),
-        ],
-      };
     default:
       return state;
   }
@@ -314,13 +299,6 @@ export const DiaryProvider = ({ children }) => {
     });
   };
 
-  const searchByTitle = (term) => {
-    dispatch({
-      type: SEARCH_TITLE,
-      payload: term,
-    });
-  };
-
   // COMMENTS
   const loadEntry = (value) => {
     dispatch({
@@ -399,7 +377,6 @@ export const DiaryProvider = ({ children }) => {
         deleteEntry,
         sortByTitle,
         sortByDate,
-        searchByTitle,
         loadEntry,
         updateText,
         updateComment,

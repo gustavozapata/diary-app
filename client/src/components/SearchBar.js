@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DiaryContext from "../context/DiaryContext";
 
-const SearchBar = ({ placeholder, doSearch, filter }) => {
+const SearchBar = ({ placeholder, doSearch }) => {
   const {
     state: { isDark, theme },
   } = useContext(DiaryContext);
@@ -20,13 +20,12 @@ const SearchBar = ({ placeholder, doSearch, filter }) => {
       <TextInput
         onChangeText={(text) => {
           setSearch(text);
-          if (filter) filter(text);
         }}
         placeholder={placeholder}
         placeholderTextColor="#999"
         value={search}
         style={[styles.inputSearch, theme.text]}
-        onSubmitEditing={() => doSearch && doSearch(search)}
+        onSubmitEditing={() => doSearch(search)}
       />
     </View>
   );

@@ -12,7 +12,6 @@ import {
 import EntryCard from "../components/EntryCard";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import EntryAction from "../components/EntryAction";
-import SearchBar from "../components/SearchBar";
 import DiaryContext from "../context/DiaryContext";
 import screenStyles from "../styles/screenStyles";
 
@@ -75,15 +74,10 @@ const Header = ({ entries, navigation }) => {
     state: { content, theme },
     sortByTitle,
     sortByDate,
-    searchByTitle,
   } = useContext(DiaryContext);
 
   return (
     <View style={screenStyles.scrollView}>
-      <SearchBar
-        placeholder={content.SEARCH_BAR_PLACEHOLDER}
-        filter={(term) => searchByTitle(term)}
-      />
       <View style={styles.banner}>
         {entries.length > 0 && (
           <View style={{ flexDirection: "row", marginRight: 45 }}>
@@ -118,6 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     padding: 6,
+    marginTop: 20,
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "flex-end",
@@ -142,7 +137,7 @@ const styles = StyleSheet.create({
     color: "#1270DD",
   },
   startView: {
-    marginTop: 60,
+    marginTop: 80,
     alignItems: "center",
   },
   startImage: {
