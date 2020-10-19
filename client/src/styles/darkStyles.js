@@ -1,9 +1,10 @@
 export const DARK_Styles = {
   screen: {
-    backgroundColor: "#010101",
+    backgroundColor: "#23253a",
   },
   container: {
-    backgroundColor: "#010101",
+    backgroundColor: "#23253a",
+    // backgroundColor: "#010101",
   },
   section: {
     backgroundColor: "#1C1C1D",

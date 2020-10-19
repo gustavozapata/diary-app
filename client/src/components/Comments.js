@@ -29,7 +29,7 @@ const Comments = ({ entry }) => {
 
   return (
     <View>
-      <Text style={styles.commentsTitle}>{content.COMMENTS}</Text>
+      <Text style={[styles.commentsTitle, theme.text]}>{content.COMMENTS}</Text>
       <View style={styles.addComment}>
         <TouchableOpacity onPress={() => setIsChild(!isChild)}>
           <Image

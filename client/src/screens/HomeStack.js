@@ -8,7 +8,7 @@ import DiaryContext from "../context/DiaryContext";
 
 const HomeStack = ({ navigation }) => {
   const { state, save, edit, getEntries } = useContext(DiaryContext);
-  const { content } = state;
+  const { content, isDark } = state;
 
   useEffect(() => {
     getEntries();
@@ -31,7 +31,15 @@ const HomeStack = ({ navigation }) => {
   };
 
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: isDark ? "#1C1C1D" : "#fff",
+        },
+        headerTintColor: isDark ? "#fff" : "#000",
+      }}
+    >
       <Stack.Screen name="Bookland">
         {(props) => <HomeScreen {...props} />}
       </Stack.Screen>
@@ -39,7 +47,10 @@ const HomeStack = ({ navigation }) => {
         name="addEntry"
         component={AddEntryScreen}
         options={({ route }) => ({
-          title: route.params.title,
+          title:
+            route.params.title === "Edit Entry"
+              ? content.EDIT_BOOK
+              : content.NEW_BOOK,
           headerRight: () => (
             <Text style={styles.action} onPress={() => saveEntry(route.params)}>
               {content.SAVE}

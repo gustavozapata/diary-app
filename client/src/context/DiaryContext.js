@@ -23,8 +23,8 @@ import {
 } from "../helpers/types";
 import axios from "axios";
 import { host } from "../config/config";
-import { EN_HomeScreen } from "../content/English";
-import { ES_HomeScreen } from "../content/Spanish";
+import { EN_Content } from "../content/English";
+import { ES_Content } from "../content/Spanish";
 import { DARK_Styles } from "../styles/darkStyles";
 import { LIGHT_Styles } from "../styles/lightStyles";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -131,7 +131,7 @@ const diaryReducer = (state, action) => {
       return {
         ...state,
         language: action.payload,
-        content: action.payload === "English" ? EN_HomeScreen : ES_HomeScreen,
+        content: action.payload === "English" ? EN_Content : ES_Content,
       };
     case LOAD_LANG:
       try {
@@ -208,7 +208,7 @@ const initialDiaryState = {
   bookDate: toDateString(),
   entries: [],
   comment: "",
-  content: EN_HomeScreen,
+  content: EN_Content,
 };
 
 export const DiaryProvider = ({ children }) => {
@@ -218,7 +218,6 @@ export const DiaryProvider = ({ children }) => {
     // AsyncStorage.clear();
     const loadSettings = async () => {
       const storage = await AsyncStorage.getItem(STORAGE_KEY);
-      console.log(storage);
       if (storage !== null) {
         let settings = JSON.parse(storage);
         dispatch({

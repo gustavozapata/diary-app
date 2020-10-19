@@ -1,4 +1,4 @@
-export const ES_HomeScreen = {
+export const ES_Content = {
   TAB_NAME: "Inicio",
   START_MSG: "Empieza agregando un Libro usando el boton +Nuevo Libro",
   SEARCH_BAR_PLACEHOLDER: "Buscar por Titulo",
@@ -8,6 +8,8 @@ export const ES_HomeScreen = {
   SAVE: "Guardar",
   EDIT: "Editar",
   DELETE: "Borrar",
+  NEW_BOOK: "Agregar Libro",
+  EDIT_BOOK: "Editar Libro",
   COMMENTS: "Comentarios",
   COMMENT_SWITCH_USER: "Cambiar usuario",
   COMMENT_PLACEHOLDER: "Agrega un comentario",
@@ -20,4 +22,6 @@ export const ES_HomeScreen = {
   LANGUAGE: "IDIOMA",
   THEME: "APARIENCIA",
   DARK_MODE: "Modo Oscuro",
+  LIBRARY: "Biblioteca",
+  SETTINGS: "Ajustes",
 };
