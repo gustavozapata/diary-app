@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import DiaryContext from "../context/DiaryContext";
 import { toDateString } from "../utils/utils";
 
+//this component represents each of the row in the flat list
+//it holds the book title, description and date
 const EntryCard = ({ item }) => {
   const {
     state: { theme },
@@ -10,6 +12,7 @@ const EntryCard = ({ item }) => {
 
   const showDescription = () => {
     if (item.description.length > 46) {
+      //if the length of the book description is longer than 47 characters, 3 dots are placed at the end of it
       return `${item.description.substring(0, 47)}...`;
     }
     return item.description;

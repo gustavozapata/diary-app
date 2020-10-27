@@ -1,4 +1,11 @@
+//This file holds all the functions also called controllers
+//These are linked to the Model and they are responsible for the flow of the server-side application execution
+
 const Entry = require("../models/entryModel");
+
+//each controller is wrapped in a try/catch block - if no errors occur, the logic is executed, otherwise nothing occurs and the error is logged
+//each controller uses the async/await asynchronous structure
+//each controller sends a response back to the client
 
 exports.getEntries = async (req, res) => {
   try {

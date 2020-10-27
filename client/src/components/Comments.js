@@ -6,10 +6,12 @@ import {
   View,
   Image,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import SingleComment from "./SingleComment";
 import DiaryContext from "../context/DiaryContext";
 
+//this component holds the 'Comments' section that renders each comment along with the user icon
 const Comments = ({ entry }) => {
   const [isChild, setIsChild] = useState(true);
   const { state, postComment, updateComment } = useContext(DiaryContext);
@@ -20,6 +22,9 @@ const Comments = ({ entry }) => {
     updateComment("");
   }, []);
 
+  //this function returns the user icon
+  //this can't be achieved inside the 'source' attribute of the Image component
+  //this is why has been separated returning the whole 'require(path/image)'
   const loadUser = () => {
     if (isChild) {
       return require("../../assets/child.png");
@@ -51,6 +56,7 @@ const Comments = ({ entry }) => {
           value={comment}
           onChangeText={(value) => updateComment(value)}
         />
+        {/* if the 'add a comment' input is not empty, display the 'Post' button */}
         {comment.length > 0 && (
           <Text
             style={[styles.addBtn, theme.text]}
@@ -59,6 +65,8 @@ const Comments = ({ entry }) => {
                 user: isChild ? "child" : "parent",
                 comment,
               });
+              //hides keyboard when 'Post' is pressed
+              Keyboard.dismiss();
             }}
           >
             {content.POST}
@@ -66,6 +74,7 @@ const Comments = ({ entry }) => {
         )}
       </View>
       <View style={styles.comments}>
+        {/* for each comment in the 'comments' array a component called 'SingleComponent' is rendered */}
         {comments.map((comment, i) => (
           <SingleComment comment={comment} key={i} />
         ))}

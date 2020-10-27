@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Entypo from "@expo/vector-icons/Entypo";
 import DiaryContext from "../context/DiaryContext";
 
+//This file holds the Stack navigations and the Main screen for the Settings tab
 const SettingsScreen = () => {
   const {
     state: { isDark, content },
@@ -29,6 +30,7 @@ const SettingsScreen = () => {
   );
 };
 
+//this is the main screen within the Settings tab
 const MainScreen = () => {
   const { state, switchTheme } = useContext(DiaryContext);
   const { content, isDark, theme } = state;
@@ -58,6 +60,8 @@ const MainScreen = () => {
   );
 };
 
+//Both language options use the same UI with different labels
+//this function renders this widget with the label passed above
 const LanguageOption = (lang) => {
   const { state, switchLanguage } = useContext(DiaryContext);
   const { theme } = state;

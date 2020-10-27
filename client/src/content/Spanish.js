@@ -1,3 +1,4 @@
+// This is all the application content in Spanish
 export const ES_Content = {
   TAB_NAME: "Inicio",
   START_MSG: "Empieza agregando un Libro usando el boton +Nuevo Libro",

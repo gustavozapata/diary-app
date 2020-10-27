@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import DiaryContext from "../context/DiaryContext";
 
+//this component renders the container holding the information of a book from the result
 const Book = ({ book }) => {
   const {
     state: { theme },
@@ -11,7 +12,8 @@ const Book = ({ book }) => {
     <View style={[styles.container, theme.section]}>
       <Text style={[styles.bookTitle, theme.text]}>
         {book.volumeInfo.title.length > 19
-          ? book.volumeInfo.title.substring(0, 23) + "..."
+          ? //if the length of the title is longer than 23 characters, 3 dots are placed at the end of it
+            book.volumeInfo.title.substring(0, 23) + "..."
           : book.volumeInfo.title}
       </Text>
       <Image
@@ -35,7 +37,6 @@ const styles = StyleSheet.create({
     width: 150,
     height: 230,
     backgroundColor: "#fff",
-    // borderWidth: 1,
     borderColor: "#000",
     borderRadius: 10,
     padding: 5,

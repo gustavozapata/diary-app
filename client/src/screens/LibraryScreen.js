@@ -14,6 +14,7 @@ import SearchBar from "../components/SearchBar";
 import screenStyles from "../styles/screenStyles";
 import DiaryContext from "../context/DiaryContext";
 
+//This file creates the Library stack navigator and the main screen that lives in the stack
 const LibraryScreen = () => {
   const {
     state: { isDark, content },
@@ -39,6 +40,7 @@ const LibraryScreen = () => {
   );
 };
 
+//This is the Main screen in the Library tab
 const MainScreen = () => {
   const {
     state: { content, theme },
@@ -46,12 +48,17 @@ const MainScreen = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  //this function runs whenever the 'return' button is pressed
+  //it makes a GET request to the Google Books API with the word(s) specified in the search input
   const doSearch = (search) => {
     if (search !== "") {
+      //this shows a loading gif when loading the results
+      //this gif is hidden once the request has finalised
       setLoading(true);
       axios
         .get(`https://www.googleapis.com/books/v1/volumes?q=${search}`)
         .then((res) => {
+          //the results are stored in the 'books' state array
           setBooks(res.data.items);
           setLoading(false);
         });
@@ -76,6 +83,8 @@ const MainScreen = () => {
           doSearch={doSearch}
         />
 
+        {/* the 'loading' state variable defines what content to render
+           This is handled by the doSearch function above */}
         {loading ? (
           <View style={styles.loadingContainer}>
             <Image
@@ -84,6 +93,7 @@ const MainScreen = () => {
             />
           </View>
         ) : (
+          // The array is used in order to have an inner render condition
           [
             <View
               key="1"
@@ -93,6 +103,7 @@ const MainScreen = () => {
                 justifyContent: "center",
               }}
             >
+              {/* this renders the books from the results */}
               {books && books.length > 0 ? (
                 books.map((book) => <Book book={book} key={book.id} />)
               ) : (
@@ -126,7 +137,6 @@ const styles = StyleSheet.create({
   image: {
     width: 230,
     height: 320,
-    // resizeMode: "contain",
   },
 });
 

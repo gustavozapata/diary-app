@@ -10,15 +10,20 @@ import {
   StatusBar,
 } from "react-native";
 import EntryCard from "../components/EntryCard";
+//Swipeable component https://docs.swmansion.com/react-native-gesture-handler/docs/#installation
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import EntryAction from "../components/EntryAction";
 import DiaryContext from "../context/DiaryContext";
 import screenStyles from "../styles/screenStyles";
 
+//This is the main/initial screen of the application
+//It displays the list of entries
 const HomeScreen = ({ navigation }) => {
   const { state, deleteEntry } = useContext(DiaryContext);
   const { entries, content, theme, isDark } = state;
 
+  //The empty tag <> helps to wrap JSX syntax.
+  //It's used when there are multiple high level elements to wrap them in a single element
   return (
     <>
       <StatusBar barStyle={isDark ? "light-content" : "default"} />
@@ -26,12 +31,14 @@ const HomeScreen = ({ navigation }) => {
         {entries.length > 0 ? (
           <FlatList
             data={entries}
+            // The below allows us to use a header and a footer in a screen when a FlatList is rendered
             ListHeaderComponent={
               <Header entries={entries} navigation={navigation} />
             }
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => navigation.navigate(item._id)}>
-                {/* https://docs.swmansion.com/react-native-gesture-handler/docs/#installation */}
+                {/* The swipeable component is wrapped around all the entries in the list giving them the swipe left functionality
+                   The functionality is declared in the EntryAction component */}
                 <Swipeable
                   renderRightActions={(progress, dragX) => (
                     <EntryAction
@@ -69,6 +76,8 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
+//This is the header displayed in the main screen (HomeScreen)
+//it holds the Sort buttons and the '+Add Book' button
 const Header = ({ entries, navigation }) => {
   const {
     state: { content, theme },

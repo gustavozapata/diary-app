@@ -3,6 +3,8 @@ import { StyleSheet, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DiaryContext from "../context/DiaryContext";
 
+//this component is found on the Library screen
+//it renders a Text Input where users will be able to search for a book
 const SearchBar = ({ placeholder, doSearch }) => {
   const {
     state: { isDark, theme },
@@ -25,6 +27,7 @@ const SearchBar = ({ placeholder, doSearch }) => {
         placeholderTextColor="#999"
         value={search}
         style={[styles.inputSearch, theme.text]}
+        //this runs whenever the user presses the 'return' key on the keyboard
         onSubmitEditing={() => doSearch(search)}
       />
     </View>

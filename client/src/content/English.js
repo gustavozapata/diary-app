@@ -1,3 +1,4 @@
+// This is all the application content in English
 export const EN_Content = {
   TAB_NAME: "Home",
   START_MSG: "Start by adding a book using the +Add Book button",

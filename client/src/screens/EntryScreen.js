@@ -13,6 +13,8 @@ import entryStyles from "../styles/entryStyles";
 import { toDateString } from "../utils/utils";
 import DiaryContext from "../context/DiaryContext";
 
+//This is the screen that shows all the details about each entry
+//Book info, pages, comments and rating
 const EntryScreen = ({ entry }) => {
   const { updatePage, state } = useContext(DiaryContext);
   const [isEdit, setIsEdit] = useState(false);
@@ -20,7 +22,11 @@ const EntryScreen = ({ entry }) => {
   const { content, theme } = state;
 
   return (
-    <ScrollView style={[entryStyles.container, theme.screen]}>
+    <ScrollView
+      style={[entryStyles.container, theme.screen]}
+      //this helps the 'Post' button to be pressed when the 'add comment' input is focused
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={[entryStyles.title, theme.text]}>{entry.title}</Text>
       <RatingStars entry={entry} />
       <View style={styles.pagesContainer}>
@@ -39,6 +45,7 @@ const EntryScreen = ({ entry }) => {
             />
           ) : (
             <Text style={styles.pagesText}>
+              {/* Content is loaded and displayed according to the language selected */}
               {content.PAGE} {entry.page}
             </Text>
           )}

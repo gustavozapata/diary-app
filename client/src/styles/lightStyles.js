@@ -1,3 +1,4 @@
+//these are the styles to be loaded if the light theme is selected
 export const LIGHT_Styles = {
   screen: {
     backgroundColor: "#fff",

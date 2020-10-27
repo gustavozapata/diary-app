@@ -5,10 +5,15 @@ import DiaryContext from "../context/DiaryContext";
 import { UPDATE_TITLE, UPDATE_DESC } from "../helpers/types";
 import { toDateString } from "../utils/utils";
 
+//This is where new entries are created or edited
 export default function AddEntryScreen({ route }) {
+  //This is how we bring the state and functions that are used by this components
+  //Instead of passing them down to child components
   const { loadEntry, updateText, state } = useContext(DiaryContext);
   const { content, theme } = state;
 
+  //This is similar to the 'componentDidMount' for the class components
+  //it runs every time the component is mounted
   useEffect(() => {
     if (route.params && route.params.entry) {
       const { entry } = route.params;
@@ -21,8 +26,11 @@ export default function AddEntryScreen({ route }) {
       loadEntry({ title: "", description: "", date: toDateString() });
     }
   }, []);
+  //the empty [] tells react to run it only when it mounts
 
   return (
+    //Most of the style attributes use an array to use multiple style objects
+    //dark theme and light theme styles are loaded this way
     <ScrollView style={[entryStyles.container, theme.screen]}>
       <TextInput
         style={[entryStyles.title, theme.text]}

@@ -36,22 +36,5 @@
           "comment": "This is one of my favourites too",
         }
       ]
-    },
-    {
-      "title": "Trip to Colombia",
-      "description": "He's one of the most intelligent human beings ever existed",
-      "date": "24 Aug, 2020",
-      "rating": 3,
-      "page": 980,
-      "comments": [
-        {
-          "user": "child",
-          "comment": "E = mc2",
-        },
-        {
-          "user": "teacher",
-          "comment": "Yes indeed",
-        }
-      ]
     }
   ]

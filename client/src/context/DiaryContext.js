@@ -1,4 +1,3 @@
-//CONTEXT BY GORDON
 import React, { useReducer, useEffect } from "react";
 import { toDateString } from "../utils/utils";
 import {
@@ -28,10 +27,14 @@ import { DARK_Styles } from "../styles/darkStyles";
 import { LIGHT_Styles } from "../styles/lightStyles";
 import AsyncStorage from "@react-native-community/async-storage";
 
+//Key used by AsyncStorage
 const STORAGE_KEY = "settings_storage";
 
+//This initialises the Context API - we can then use it to create a Provider
 const DiaryContext = React.createContext({});
 
+//These are the reducers - they are the only ones that can modify the state of the application
+//They define the business rules of our application
 const diaryReducer = (state, action) => {
   switch (action.type) {
     case GET_BOOKS:
@@ -47,6 +50,8 @@ const diaryReducer = (state, action) => {
         entries: [...state.entries, action.payload],
       };
     case EDIT_BOOK:
+      //Once the edit (patch call) is done, it will reset title and description to empty
+      //Also, it finds the entry by its id, and it then passes the new content (in the action.payload) to be replaced by the old content
       return {
         ...state,
         bookTitle: "",
@@ -62,6 +67,8 @@ const diaryReducer = (state, action) => {
         }),
       };
     case DELETE_BOOK:
+      //This reducer receives the id of the entry to be deleted
+      //it then iterate through all the entries and creates a new array with all the items except the one with the id equal to the id passed
       return {
         ...state,
         entries: state.entries.filter((entry) => entry._id !== action.payload),
@@ -78,6 +85,8 @@ const diaryReducer = (state, action) => {
     case UPDATE_DESC:
       return { ...state, bookDescription: action.payload };
     case ADD_COMMENT:
+      //This reducer add a comment to the 'comments' array.
+      //It first finds the entry and then it pushes the new comment into the comments array
       return {
         ...state,
         comment: "",
@@ -88,6 +97,7 @@ const diaryReducer = (state, action) => {
             return {
               ...entry,
               comments: [
+                //this is what's happening here: comments: [all the comments, new comment]
                 ...entry.comments,
                 { user: action.payload.user, comment: action.payload.comment },
               ],
@@ -126,12 +136,15 @@ const diaryReducer = (state, action) => {
         }),
       };
     case SWITCH_LANG:
+      //The language is loaded from the objects defined in the 'content' folder
+      //export const EN_Content = {TAB_NAME: "Home"...}
       return {
         ...state,
         language: action.payload,
         content: action.payload === "English" ? EN_Content : ES_Content,
       };
     case LOAD_LANG:
+      //Whenever the language is changed, it is stored in the persistent storage on the device
       try {
         AsyncStorage.setItem(
           STORAGE_KEY,
@@ -143,12 +156,15 @@ const diaryReducer = (state, action) => {
         return state;
       }
     case SWITCH_THEME:
+      //Switching theme is also similar to language
+      //it loads the object specific to each theme
       return {
         ...state,
         isDark: action.payload,
         theme: action.payload ? DARK_Styles : LIGHT_Styles,
       };
     case LOAD_THEME:
+      //The selected theme is then stored on the persistent storage of the device
       try {
         AsyncStorage.setItem(
           STORAGE_KEY,
@@ -160,6 +176,10 @@ const diaryReducer = (state, action) => {
         return state;
       }
     case SORT_TITLE:
+      //This will sort the entries based on their titles alphabetically
+      //sort() takes a function with two values - and compares them
+      //["a", "g", "h"] sort will compare each one of this to see which goes first/last
+      // a,g then a,h then g,h
       return {
         ...state,
         entries: state.entries.slice().sort((a, b) => {
@@ -171,6 +191,7 @@ const diaryReducer = (state, action) => {
         }),
       };
     case SORT_DATE:
+      //Similar than SORT_TITLE by using dates
       return {
         ...state,
         entries: state.entries.slice().sort((a, b) => {
@@ -184,6 +205,7 @@ const diaryReducer = (state, action) => {
   }
 };
 
+//This is the initial state of the application
 const initialDiaryState = {
   language: "English",
   isDark: false,
@@ -196,11 +218,19 @@ const initialDiaryState = {
   content: EN_Content,
 };
 
+//This Provider wraps the whole app and passes down all the state of the app and the 'actions'  or functions that call the reducers
 export const DiaryProvider = ({ children }) => {
+  //The Reducer is created and takes the reducers functions and the initial state
   const [state, dispatch] = useReducer(diaryReducer, initialDiaryState);
 
+  //This hook is called every time the STORAGE_KEY is created/updated
+  //Since STORAGE_KEY is initialised and not modified, useEffect will run only once
   useEffect(() => {
+    //This line is used in development to delete the data in the storage (Async Storage)
     // AsyncStorage.clear();
+
+    //async and await are used to allow the app to run asynchronous or non-blocking code
+    //Since AsyncStorage performs actions that can delay the application, we tell the program to treat it asynchronously
     const loadSettings = async () => {
       const storage = await AsyncStorage.getItem(STORAGE_KEY);
       if (storage !== null) {
@@ -218,8 +248,12 @@ export const DiaryProvider = ({ children }) => {
     loadSettings();
   }, [STORAGE_KEY]);
 
+  //The below are functions that dispatch actions with a type and some data (payload)
+
   // ENTRIES
   const getEntries = () => {
+    //Axios calls (get, post, patch, etc.) the end-point and once a response is sent back, the dispatch will call the specific reducer
+    //JS promise is used by axios here
     axios.get(`${host}/api/entries`).then((res) => {
       dispatch({
         type: GET_BOOKS,
@@ -299,7 +333,7 @@ export const DiaryProvider = ({ children }) => {
     });
   };
 
-  // COMMENTS
+  // PROPERTIES IN EACH ENTRY
   const loadEntry = (value) => {
     dispatch({
       type: LOAD_ENTRY,
@@ -345,6 +379,8 @@ export const DiaryProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  //SETTINGS
+  //Both functions first update the state and then store the updated state onto the persistent storage on the device
   const switchLanguage = (lang) => {
     dispatch({
       type: SWITCH_LANG,
@@ -367,12 +403,14 @@ export const DiaryProvider = ({ children }) => {
     });
   };
 
+  //The state and the actions are passed to the highest level component App.js
   return (
     <DiaryContext.Provider
       value={{
         state: state,
         save: saveDiaryEntry,
         edit: editDiaryEntry,
+        //The ones below don't use the above syntax. ES6 allows us to pass just the key when the key/value have the same name
         getEntries,
         deleteEntry,
         sortByTitle,

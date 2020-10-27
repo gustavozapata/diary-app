@@ -1,3 +1,6 @@
+//This file contains all the possible routes or end-points
+//These take the request from the client and pass it onto the respective controller
+
 const express = require("express");
 const entryController = require("../controllers/entryController");
 const router = express.Router();

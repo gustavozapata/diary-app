@@ -1,10 +1,10 @@
+//these are the styles to be loaded if the dark theme is selected
 export const DARK_Styles = {
   screen: {
     backgroundColor: "#23253a",
   },
   container: {
     backgroundColor: "#23253a",
-    // backgroundColor: "#010101",
   },
   section: {
     backgroundColor: "#0F1129",

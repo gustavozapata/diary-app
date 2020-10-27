@@ -6,16 +6,22 @@ import HomeScreen from "./HomeScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import DiaryContext from "../context/DiaryContext";
 
+//This component holds the stack navigation for the HomeScreen
+//it defines the different screens that live in the Home tab
 const HomeStack = ({ navigation }) => {
   const { state, save, edit, getEntries } = useContext(DiaryContext);
   const { content, isDark } = state;
 
+  //this function runs when the component mounts (when it is created)
   useEffect(() => {
     getEntries();
   }, []);
 
   const Stack = createStackNavigator();
 
+  //this function will run when a entry is either added or edited
+  //it checks if there is content in the Book Title field, if there is:
+  //it checks the type of action and then executes it
   const saveEntry = (action) => {
     if (state.bookTitle !== "") {
       if (action.title === "Add Book") {
@@ -30,6 +36,8 @@ const HomeStack = ({ navigation }) => {
     }
   };
 
+  //this is how the Stack Navigator wraps the different/possible screens in this stack
+  //each screen can have options to configure things like header, title, background colour, etc
   return (
     <Stack.Navigator
       initialRouteName="Home"

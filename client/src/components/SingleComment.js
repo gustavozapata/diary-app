@@ -2,11 +2,14 @@ import React, { useContext } from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
 import DiaryContext from "../context/DiaryContext";
 
+//this component renders each comment with the icon and the comment itself
 const SingleComment = ({ comment }) => {
   const {
     state: { theme },
   } = useContext(DiaryContext);
 
+  //react doesn't allow string literals or string interpolation inside the require() function inside the souce attribute
+  //this is why the logic happens here, returning the whole 'require' function
   const loadUser = (user) => {
     switch (user) {
       case "child":
@@ -22,7 +25,11 @@ const SingleComment = ({ comment }) => {
     <View
       style={[
         styles.container,
-        comment.user === "teacher" ? { alignItems: "flex-end" } : null,
+        //if the user is 'child' or 'parent', the comment will be placed at the left of the screen
+        //this helps to identify who posted the comment
+        comment.user === "teacher"
+          ? { alignItems: "flex-end" }
+          : { alignItems: "flex-start" },
       ]}
     >
       <Text style={[styles.comment, theme.comment]}>{comment.comment}</Text>
@@ -39,7 +46,6 @@ export default SingleComment;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 20,
-    // flexDirection: "row",
   },
   comment: {
     marginHorizontal: 45,

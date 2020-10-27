@@ -1,3 +1,4 @@
+//These types will be used by the actions and the reducers
 export const GET_BOOKS = "GET_BOOKS";
 export const ADD_BOOK = "ADD_BOOK";
 export const EDIT_BOOK = "EDIT_BOOK";
